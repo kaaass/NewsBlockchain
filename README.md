@@ -1,14 +1,35 @@
-# demo-travis-cmake-gtest-codecov
+# NewsBlockchain
 
-| Platform  | Result                                                       |
+| 构建平台  | 结果                                                       |
 | --------- | ------------------------------------------------------------ |
-| Travis CI | [![Build Status](https://www.travis-ci.com/kaaass/demo_travis_cmake_gtest_codecov.svg?branch=master)](https://www.travis-ci.com/kaaass/demo_travis_cmake_gtest_codecov) |
-| Appveyor  | [![Build status](https://ci.appveyor.com/api/projects/status/0t0u8ndy2js4sa4b?svg=true)](https://ci.appveyor.com/project/kaaass/demo-travis-cmake-gtest-codecov) |
-| Codecov   | [![codecov](https://codecov.io/gh/kaaass/demo_travis_cmake_gtest_codecov/branch/master/graph/badge.svg)](https://codecov.io/gh/kaaass/demo_travis_cmake_gtest_codecov) |
+| Travis CI | [![Build Status](https://www.travis-ci.com/kaaass/news_blockchain.svg?branch=master)](https://www.travis-ci.com/kaaass/news_blockchain) |
+| Appveyor  | [![Build status](https://ci.appveyor.com/api/projects/status/btr7ocm57pv4dr0l?svg=true)](https://ci.appveyor.com/project/kaaass/newsblockchain) |
+| Codecov   | [![codecov](https://codecov.io/gh/kaaass/NewsBlockchain/branch/master/graph/badge.svg)](https://codecov.io/gh/kaaass/NewsBlockchain) |
 
-Demo project for Travis CI, appveyor, cmake, gtest, codecov
+一个简易的区块链模拟，用于存放、校验新闻。
 
-## Thanks
+本仓库为吉林大学软件学院数据结构荣誉课程(2018级)课程项目的代码仓库。
+
+## 使用
+
+### 准备工作
+
+1. 安装CMake
+2. 克隆本仓库
+3. `git submodule update --init --recursive`
+
+### 编译
+
+执行
+
+```shell script
+mkdir build
+cd build
+cmake .. -DENABLE_COVERAGE=On
+cmake --build . --config Release
+```
+
+## 致谢
 
 [CMake-codecov](https://github.com/RWTH-HPC/CMake-codecov)
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9)
 
 set(CMAKE_CXX_STANDARD 11)
 
-project(demo_travis_cmake_gtest_codecov)
+project(news_blockchain)
 
 # Setup externals
 add_subdirectory(externals)
@@ -10,8 +10,8 @@ add_subdirectory(externals)
 # Find source code
 file(GLOB_RECURSE src_files "src/*.c" "src/*.cc" "src/*.cpp" "src/*.h" "src/*.hpp")
 
-add_executable(demo_executable ${src_files})
-add_coverage(demo_executable)
+add_executable(news_blockchain ${src_files})
+add_coverage(news_blockchain)
 
 # Unit Test
 enable_testing()
