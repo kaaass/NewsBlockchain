@@ -26,6 +26,8 @@ public:
 
     /**
      * 转换为字节vector
+     *
+     * 默认字节序不变，即大端
      * @return
      */
     std::vector<Byte> toVector();
@@ -53,6 +55,8 @@ public:
 
     /**
      * 转换为字节vector
+     *
+     * 默认字节序不变，即大端
      * @return
      */
     std::vector<Byte> toVector();

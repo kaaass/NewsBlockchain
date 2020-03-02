@@ -12,7 +12,7 @@ TEST(TestInt, testCast) {
 
 TEST(TestInt, testToVector) {
     std::vector<Byte> vec;
-
+    // 字节序为大端，即小index对应高位数据
     UInt32 uInt32 = 0x87654321u;
     vec = uInt32.toVector();
     ASSERT_EQ(0x87u, (unsigned int) vec[0]);

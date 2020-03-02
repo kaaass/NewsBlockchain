@@ -5,9 +5,9 @@ Bit::operator unsigned char() {
     return b;
 }
 
-Bit Byte::BitPattern::operator[](int ind) const {
+Bit LittleEndianByte::BitPattern::operator[](int ind) const {
     assert(ind >= 0 && ind <= 7);
-#ifndef MEM_LITLLE_ENDIAN
+#ifdef MEM_BIT_BIG_ENDIAN
     ind = 7 - ind;
 #endif
     switch (ind) {
@@ -32,18 +32,18 @@ Bit Byte::BitPattern::operator[](int ind) const {
     }
 }
 
-Bit Byte::operator[](int ind) const {
+Bit LittleEndianByte::operator[](int ind) const {
     return bits[ind];
 }
 
-std::ostream &operator<<(std::ostream &out, const Byte &byte) {
+std::ostream &operator<<(std::ostream &out, const LittleEndianByte &byte) {
     for (int i = 7; i >= 0; i--) {
         out << byte.bits[i];
     }
     return out;
 }
 
-Byte::operator unsigned char() const {
+LittleEndianByte::operator unsigned char() const {
     return val;
 }
 
