@@ -1,6 +1,6 @@
-#include "project.h"
+#include <iostream>
 
 int main() {
-    Project::Foo();
+    std::cout << "News Blockchain" << std::endl;
     return 0;
 }
