@@ -22,3 +22,13 @@ TEST(TestByte, testIndex) {
     ASSERT_DEATH(byte[-1], "ind >= 0 && ind <= 7");
     ASSERT_DEATH(byte[8], "ind >= 0 && ind <= 7");
 }
+
+TEST(TestByte, testOutput) {
+    std::stringstream sstream;
+    std::string ret;
+
+    Byte byte = 0b10011011u;
+    sstream << byte;
+    sstream >> ret;
+    ASSERT_EQ("10011011", ret);
+}
