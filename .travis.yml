@@ -1,0 +1,28 @@
+dist: trusty
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-5.0
+    packages:
+      - g++-6
+      - clang-5.0
+
+before_install:
+  - mkdir build
+  - cd build
+  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake .. -DENABLE_COVERAGE=On
+
+script:
+  - make
+  - ctest --verbose
+  - make gcov
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -X gcov
