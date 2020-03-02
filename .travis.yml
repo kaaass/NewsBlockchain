@@ -25,4 +25,4 @@ script:
   - make gcov
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -X gcov
+  - bash <(curl -s https://codecov.io/bash) -X gcov -t "52626f93-a489-4b6a-987a-7e0ead76b53b"
