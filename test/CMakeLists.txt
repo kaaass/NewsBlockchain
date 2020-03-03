@@ -18,7 +18,7 @@ if(BUILD_TEST)
     add_coverage(unit_test)
     
     if (MSVC)
-        target_compile_options(unit_test PRIVATE /W4 /WX)
+        target_compile_options(unit_test PRIVATE /W4 /WX-)
 
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Ox")
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od")
