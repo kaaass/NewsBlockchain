@@ -49,6 +49,12 @@ union LittleEndianByte {
 
     operator unsigned char() const;
 
+    /**
+     * 将字节转为十六进制字符串
+     * @return
+     */
+    std::string toHexString() const;
+
     friend std::ostream & operator<<(std::ostream &, const LittleEndianByte&);
 };
 

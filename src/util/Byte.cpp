@@ -1,5 +1,7 @@
 #include "Byte.h"
+#include "Types.h"
 #include <cassert>
+#include <sstream>
 
 Bit::operator unsigned char() {
     return b;
@@ -45,6 +47,14 @@ std::ostream &operator<<(std::ostream &out, const LittleEndianByte &byte) {
 
 LittleEndianByte::operator unsigned char() const {
     return val;
+}
+
+std::string LittleEndianByte::toHexString() const {
+    std::stringstream sstream;
+    std::string ret;
+    sstream << std::hex << (UInt) val;
+    sstream >> ret;
+    return ret;
 }
 
 std::ostream &operator<<(std::ostream &out, const Bit &bit) {
