@@ -1,4 +1,5 @@
 #include <cassert>
+#include <string>
 #include "ByteBuffer.h"
 
 ByteBuffer::ByteBuffer(void *data, size_t size) {
@@ -42,7 +43,7 @@ std::ostream &operator<<(std::ostream &out, const ByteBuffer &buffer) {
     for (ULong i = 0; i < buffer.bytes.size(); i++) {
         if (i > 0)
             out << " ";
-        out << buffer.bytes[i].toHexString();
+        out << buffer.bytes[i].toHexString().c_str();
     }
     return out;
 }
