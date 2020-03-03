@@ -18,9 +18,6 @@ TEST(TestByte, testIndex) {
     ASSERT_EQ(1u, (unsigned char) byte[5]);
     ASSERT_EQ(0u, (unsigned char) byte[6]);
     ASSERT_EQ(1u, (unsigned char) byte[7]);
-    // 超界应退出
-    ASSERT_DEATH(byte[-1], "ind >= 0 && ind <= 7");
-    ASSERT_DEATH(byte[8], "ind >= 0 && ind <= 7");
 }
 
 TEST(TestByte, testOutput) {
