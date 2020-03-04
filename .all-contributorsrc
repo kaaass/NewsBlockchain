@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "kaaass",
+      "name": "KAAAsS",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/13360135?v=4",
+      "profile": "https://github.com/kaaass",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "NewsBlockchain",
+  "projectOwner": "kaaass",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
