@@ -14,6 +14,15 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "ztmail723",
+      "name": "ZT",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/44718750?v=4",
+      "profile": "https://github.com/ztmail723",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
