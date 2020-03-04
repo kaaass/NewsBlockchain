@@ -6,7 +6,7 @@ ByteBuffer::ByteBuffer(void *data, size_t size) {
     bytes.assign((UChar *) data, (UChar *) data + size);
 }
 
-ByteBuffer::ByteBuffer(const std::vector<Byte>& buffer) {
+ByteBuffer::ByteBuffer(const std::vector<Byte> &buffer) {
     bytes = buffer;
 }
 
@@ -49,6 +49,14 @@ std::ostream &operator<<(std::ostream &out, const ByteBuffer &buffer) {
 }
 
 Byte &ByteBuffer::operator[](Index ind) {
+    size_t size = this->size();
+    if (ind < 0)
+        ind += size;
+    assert(0 <= ind && (unsigned long) ind < size);
+    return bytes[ind];
+}
+
+Byte ByteBuffer::operator[](ByteBuffer::Index ind) const {
     size_t size = this->size();
     if (ind < 0)
         ind += size;

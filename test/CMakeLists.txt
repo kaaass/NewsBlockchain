@@ -1,4 +1,4 @@
-if(BUILD_TEST)
+if (BUILD_TEST)
     # Copy test files
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/resources")
     file(GLOB test_files "resources/*")
@@ -6,17 +6,17 @@ if(BUILD_TEST)
 
     # Find test code
     file(GLOB_RECURSE test_codes "*.c" "*.cc" "*.cpp" "*.h" "*.hpp")
-    
-    find_package (Threads)
-    
+
+    find_package(Threads)
+
     add_executable(unit_test ${test_codes} ${src_files})
     target_include_directories(unit_test PUBLIC
-        ../src)
+            ../src)
     target_link_libraries(unit_test gtest ${CMAKE_THREAD_LIBS_INIT})
     add_test(NAME "RunUnitTest"
             COMMAND "./unit_test")
     add_coverage(unit_test)
-    
+
     if (MSVC)
         target_compile_options(unit_test PRIVATE /W4 /WX-)
 
@@ -25,7 +25,7 @@ if(BUILD_TEST)
 
         # VS 2017 removed tr1
         add_definitions(-DGTEST_HAS_TR1_TUPLE=0)
-    else()
-        target_compile_options(unit_test PRIVATE -g -Wall -Werror -Wextra -Wpedantic)
-    endif()
-endif()
+    else ()
+        target_compile_options(unit_test PRIVATE -g -Wall -Wextra -Wpedantic)
+    endif ()
+endif ()

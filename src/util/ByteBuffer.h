@@ -76,6 +76,8 @@ public:
      * @return
      */
     Byte &operator[](Index ind);
+    
+    Byte operator[](Index ind) const;
 
     /**
      * 将缓冲区数据转为vector
