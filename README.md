@@ -1,6 +1,6 @@
 # NewsBlockchain
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 | 构建平台  | 结果                                                       |
@@ -57,6 +57,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/kaaass"><img src="https://avatars1.githubusercontent.com/u/13360135?v=4" width="100px;" alt=""/><br /><sub><b>KAAAsS</b></sub></a><br /><a href="https://github.com/kaaass/NewsBlockchain/commits?author=kaaass" title="Code">💻</a> <a href="#maintenance-kaaass" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/ztmail723"><img src="https://avatars3.githubusercontent.com/u/44718750?v=4" width="100px;" alt=""/><br /><sub><b>ZT</b></sub></a><br /><a href="https://github.com/kaaass/NewsBlockchain/commits?author=ztmail723" title="Code">💻</a></td>
   </tr>
 </table>
 
