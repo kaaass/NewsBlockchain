@@ -2,6 +2,7 @@
 #define NEWS_BLOCKCHAIN_INT_H
 
 #include "Byte.h"
+#include "Types.h"
 #include <vector>
 
 /**
@@ -60,6 +61,28 @@ public:
      * @return
      */
     std::vector<Byte> toVector();
+};
+
+/**
+ * 常用整数函数
+ */
+class IntUtil {
+
+public:
+
+    /**
+     * 计算32位无符号整数下一个2次幂
+     * @param val
+     * @return
+     */
+    static UInt next32Pow2(UInt val);
+
+    /**
+     * 计算64位无符号整数下一个2次幂
+     * @param val
+     * @return
+     */
+    static ULong next64Pow2(ULong val);
 };
 
 #endif //NEWS_BLOCKCHAIN_INT_H

@@ -63,3 +63,26 @@ UInt16 &UInt16::operator=(unsigned short val) {
 std::vector<Byte> UInt16::toVector() {
     return std::vector<Byte>(bytes, bytes + 2);
 }
+
+UInt IntUtil::next32Pow2(UInt v) {
+    v--;
+    v |= v >> (1u << 0u);
+    v |= v >> (1u << 1u);
+    v |= v >> (1u << 2u);
+    v |= v >> (1u << 3u);
+    v |= v >> (1u << 4u);
+    v++;
+    return v;
+}
+
+ULong IntUtil::next64Pow2(ULong v) {
+    v--;
+    v |= v >> (1u << 0u);
+    v |= v >> (1u << 1u);
+    v |= v >> (1u << 2u);
+    v |= v >> (1u << 3u);
+    v |= v >> (1u << 4u);
+    v |= v >> (1u << 5u);
+    v++;
+    return v;
+}
