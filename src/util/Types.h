@@ -6,12 +6,12 @@
  */
 
 // 基本数据类型
-#include <util/Byte.h>
-#include <util/Int.h>
-
 typedef unsigned short UShort;
 typedef unsigned int UInt;
 typedef unsigned long ULong;
 typedef unsigned char UChar;
+
+#include <util/Byte.h>
+#include <util/Int.h>
 
 #endif //NEWS_BLOCKCHAIN_TYPES_H

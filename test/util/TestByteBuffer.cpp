@@ -17,6 +17,13 @@ TEST(TestByteBuffer, testConstruct) {
     ASSERT_EQ(5u, bufferB.size());
     for (int i = 0; i < 5; i++)
         ASSERT_EQ(data[i], bufferB[i]);
+
+    // 测试字符串
+    std::string str = "abcde";
+    ByteBuffer bufferC = ByteBuffer::str(str);
+    ASSERT_EQ(5u, bufferC.size());
+    for (ULong i = 0; i < str.size(); i++)
+        ASSERT_EQ(str[i], bufferC[i]);
 }
 
 TEST(TestByteBuffer, testOperate) {

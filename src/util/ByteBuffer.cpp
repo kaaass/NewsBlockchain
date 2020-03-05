@@ -10,6 +10,10 @@ ByteBuffer::ByteBuffer(const std::vector<Byte> &buffer) {
     bytes = buffer;
 }
 
+ByteBuffer ByteBuffer::str(const std::string &str) {
+    return ByteBuffer((void *) str.data(), str.size());
+}
+
 size_t ByteBuffer::size() const {
     return bytes.size();
 }

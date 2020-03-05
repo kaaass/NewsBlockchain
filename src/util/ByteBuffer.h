@@ -3,6 +3,7 @@
 
 #include <util/Types.h>
 #include <vector>
+#include <string>
 
 /**
  * 字节缓冲区
@@ -24,6 +25,12 @@ public:
      * @param buffer
      */
     ByteBuffer(const std::vector<Byte> &buffer);
+
+    /**
+     * 将字符串转为字节缓冲区
+     * @param buffer
+     */
+    static ByteBuffer str(const std::string &str);
 
     ByteBuffer &operator=(const std::vector<Byte> &buffer);
 
