@@ -83,7 +83,7 @@ public:
      * @return
      */
     Byte &operator[](Index ind);
-    
+
     Byte operator[](Index ind) const;
 
     /**
@@ -117,11 +117,47 @@ public:
      */
     ByteBuffer slice(Index start, Index end);
 
+    /**
+     * 在缓冲区末尾以大端序插入一个16位无符号整数
+     * @param byte
+     * @return
+     */
+    ByteBuffer &write(UShort byte);
+
+    /**
+     * 在缓冲区末尾以大端序插入一个32位无符号整数
+     * @param byte
+     * @return
+     */
+    ByteBuffer &write(UInt byte);
+
+    /**
+     * 在缓冲区末尾以大端序插入一个64位无符号整数
+     * @param byte
+     * @return
+     */
+    ByteBuffer &write(ULong byte);
+
     friend bool operator==(const ByteBuffer &, const ByteBuffer &);
 
     friend std::ostream &operator<<(std::ostream &, const ByteBuffer &);
 
     ~ByteBuffer() = default;
+};
+
+/**
+ * 写字节缓冲区接口
+ */
+class IByteBufferWriter {
+
+public:
+
+    /**
+     * 向字节缓冲区中写入对象数据
+     * @param buffer
+     * @return
+     */
+    virtual ByteBuffer &writeBuffer(ByteBuffer &buffer) = 0;
 };
 
 

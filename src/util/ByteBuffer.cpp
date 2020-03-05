@@ -101,3 +101,22 @@ ByteBuffer &ByteBuffer::operator=(const std::vector<Byte> &buffer) {
 bool operator==(const ByteBuffer &bufferA, const ByteBuffer &bufferB) {
     return bufferA.bytes == bufferB.bytes;
 }
+
+ByteBuffer &ByteBuffer::write(UShort byte) {
+    auto data = reinterpret_cast<Byte *>(&byte);
+    return this->push_back(data[1]).push_back(data[0]);
+}
+
+ByteBuffer &ByteBuffer::write(UInt byte) {
+    auto data = reinterpret_cast<Byte *>(&byte);
+    return this->push_back(data[3]).push_back(data[2])
+            .push_back(data[1]).push_back(data[0]);
+}
+
+ByteBuffer &ByteBuffer::write(ULong byte) {
+    auto data = reinterpret_cast<Byte *>(&byte);
+    return this->push_back(data[7]).push_back(data[6])
+            .push_back(data[5]).push_back(data[4])
+            .push_back(data[3]).push_back(data[2])
+            .push_back(data[1]).push_back(data[0]);
+}

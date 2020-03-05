@@ -88,3 +88,38 @@ TEST(TestByteBuffer, testOutput) {
     sstream << buffer;
     ASSERT_EQ("12 19 50 3f 4f ff", sstream.str());
 }
+
+TEST(TestByteBuffer, testWrite) {
+    ByteBuffer buf;
+
+    // UShort
+    UShort ushort = 0x1234u;
+    buf.write(ushort);
+    ASSERT_EQ(2u, buf.size());
+    ASSERT_EQ(0x12u, buf[0]);
+    ASSERT_EQ(0x34u, buf[1]);
+
+    // UInt
+    buf = ByteBuffer();
+    UInt uInt = 0x12345678u;
+    buf.write(uInt);
+    ASSERT_EQ(4u, buf.size());
+    ASSERT_EQ(0x12u, buf[0]);
+    ASSERT_EQ(0x34u, buf[1]);
+    ASSERT_EQ(0x56u, buf[2]);
+    ASSERT_EQ(0x78u, buf[3]);
+
+    // ULong
+    buf = ByteBuffer();
+    ULong uLong = 0x1234567887654321u;
+    buf.write(uLong);
+    ASSERT_EQ(8u, buf.size());
+    ASSERT_EQ(0x12u, buf[0]);
+    ASSERT_EQ(0x34u, buf[1]);
+    ASSERT_EQ(0x56u, buf[2]);
+    ASSERT_EQ(0x78u, buf[3]);
+    ASSERT_EQ(0x87u, buf[4]);
+    ASSERT_EQ(0x65u, buf[5]);
+    ASSERT_EQ(0x43u, buf[6]);
+    ASSERT_EQ(0x21u, buf[7]);
+}
