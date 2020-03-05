@@ -1,10 +1,13 @@
 #ifndef NEWS_BLOCKCHAIN_CHAINBLOCK_H
 #define NEWS_BLOCKCHAIN_CHAINBLOCK_H
 
-typedef unsigned long long Timestamp;
-
 #include <util/Types.h>
 #include <util/ByteBuffer.h>
+
+/**
+ * 64位时间戳
+ */
+typedef ULong Timestamp;
 
 /**
  * 区块类
@@ -37,7 +40,7 @@ class ChainBlock {
         /**
          * 区块ID
          */
-        UInt blockId;
+        UInt32 blockId;
 
         /**
          * 前一区块的哈希值
@@ -108,7 +111,7 @@ public:
      * 建立区块
      * @param data
      */
-    ChainBlock(std::string data);
+    ChainBlock(const std::string &data, UInt32 prevHash, UInt blockId);
 
     /**
      * 计算区块哈希
@@ -182,6 +185,16 @@ private:
      * @return
      */
     const ByteBuffer &getDictBlock() const;
+
+    /**
+     * 从区块体构建哈希树
+     */
+    void buildHashTree();
+
+    /**
+     * 计算blockHashOffset
+     */
+    static HashTreeIndex calcBlockHashOffset(DataBlockIndex size);
 };
 
 
