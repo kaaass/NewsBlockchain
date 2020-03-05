@@ -36,7 +36,7 @@ void ChainBlock::buildHashTree() {
     ULong rest = bodyData.size();
 
     // 先计算一遍哈希
-    for (auto buffer : bodyData) {
+    for (auto &buffer : bodyData) {
         hashTree.push_back(Hash::run(buffer));
     }
 
@@ -90,8 +90,9 @@ ChainBlock::HashTreeIndex ChainBlock::calcBlockHashOffset(ChainBlock::DataBlockI
 }
 
 UInt32 ChainBlock::getBlockHash() const {
-    // TODO
-    return UInt32();
+    ByteBuffer buf;
+    writeBuffer(buf);
+    return Hash::run(buf);
 }
 
 const ChainBlock::Header &ChainBlock::getHeader() const {
@@ -150,4 +151,36 @@ const ByteBuffer &ChainBlock::getDictBlock() const {
 
 ChainBlock::DataBlockIndex ChainBlock::size() const {
     return blockHeader.size;
+}
+
+ByteBuffer &ChainBlock::writeBuffer(ByteBuffer &buffer) const {
+    /*
+     * 区块头部
+     */
+    // 4字节 区块ID
+    buffer.write(blockHeader.blockId);
+    // 4字节 前一区块的哈希值
+    buffer.write(blockHeader.prevBlockHash);
+    // 4字节 哈希树树根
+    buffer.write(blockHeader.hashRoot);
+    // 8字节 建块时间戳
+    buffer.write(blockHeader.timestamp);
+    // 8字节 数据块数量 block_size
+    buffer.write(blockHeader.size);
+
+    /*
+     * 区块体
+     */
+    // 8字节              哈希树长度（不包含树根） hash_size
+    buffer.write(blockBody.hashTree.size() - 1);
+    // 4 * hash_size字节  哈希树（不包含树根）
+    buffer.push_back(blockBody.hashTree.data() + 1, blockBody.hashTree.size() - 1);
+    // 每块数据块
+    for (auto &data : blockBody.dataBlocks) {
+        // 4字节      数据块内容长度 length
+        buffer.write(data.size());
+        // length字节 数据块内容
+        buffer.push_back(data.data(), data.size());
+    }
+    return buffer;
 }

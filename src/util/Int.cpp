@@ -4,7 +4,7 @@ UInt32::UInt32(unsigned int val) {
     uintToBytes(val, bytes);
 }
 
-UInt32::operator unsigned int() {
+UInt32::operator unsigned int() const {
     return byteToUint(bytes);
 }
 
@@ -13,7 +13,7 @@ UInt32 &UInt32::operator=(unsigned int val) {
     return *this;
 }
 
-std::vector<Byte> UInt32::toVector() {
+std::vector<Byte> UInt32::toVector() const {
     return std::vector<Byte>(bytes, bytes + 4);
 }
 
@@ -51,7 +51,7 @@ UInt16::UInt16(unsigned short val) {
     uintToBytes(val, bytes);
 }
 
-UInt16::operator unsigned short() {
+UInt16::operator unsigned short() const {
     return byteToUint(bytes);
 }
 
@@ -60,7 +60,7 @@ UInt16 &UInt16::operator=(unsigned short val) {
     return *this;
 }
 
-std::vector<Byte> UInt16::toVector() {
+std::vector<Byte> UInt16::toVector() const {
     return std::vector<Byte>(bytes, bytes + 2);
 }
 

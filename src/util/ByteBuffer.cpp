@@ -22,7 +22,7 @@ ByteBuffer &ByteBuffer::push_back(Byte byte) {
     return push_back(&byte, 1u);
 }
 
-ByteBuffer &ByteBuffer::push_back(void *data, size_t size) {
+ByteBuffer &ByteBuffer::push_back(void const *data, size_t size) {
     bytes.insert(bytes.end(), (UChar *) data, (UChar *) data + size);
     return *this;
 }
@@ -31,7 +31,7 @@ ByteBuffer &ByteBuffer::push_front(Byte byte) {
     return push_front(&byte, 1u);
 }
 
-ByteBuffer &ByteBuffer::push_front(void *data, size_t size) {
+ByteBuffer &ByteBuffer::push_front(void const *data, size_t size) {
     bytes.insert(bytes.begin(), (UChar *) data, (UChar *) data + size);
     return *this;
 }
@@ -73,6 +73,10 @@ std::vector<Byte> ByteBuffer::toVector() const {
 }
 
 Byte *ByteBuffer::data() {
+    return bytes.data();
+}
+
+Byte const *ByteBuffer::data() const {
     return bytes.data();
 }
 

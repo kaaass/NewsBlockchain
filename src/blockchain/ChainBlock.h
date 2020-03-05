@@ -12,7 +12,7 @@ typedef ULong Timestamp;
 /**
  * 区块类
  */
-class ChainBlock {
+class ChainBlock : public IByteBufferWriter {
 
     /*
      * 定义相关结构体
@@ -34,6 +34,13 @@ class ChainBlock {
 
     /**
      * 区块头部结构体
+     *
+     * 二进制格式（大端）：
+     *  4字节 区块ID
+     *  4字节 前一区块的哈希值
+     *  4字节 哈希树树根
+     *  8字节 建块时间戳
+     *  8字节 数据块数量 block_size
      */
     struct Header {
 
@@ -44,6 +51,8 @@ class ChainBlock {
 
         /**
          * 前一区块的哈希值
+         *
+         * 第一区块填充0x00
          */
         UInt32 prevBlockHash;
 
@@ -65,6 +74,13 @@ class ChainBlock {
 
     /**
      * 区块体结构体
+     *
+     * 二进制格式（大端）：
+     *  8字节              哈希树长度（不包含树根） hash_size
+     *  4 * hash_size字节  哈希树（不包含树根）
+     *  每块数据块：
+     *    4字节      数据块内容长度 length
+     *    length字节 数据块内容
      */
     struct Body {
 
@@ -177,6 +193,15 @@ public:
      * @return
      */
     HashTreeIndex getHashTreeIndexById(DataBlockIndex ind) const;
+
+    /**
+     * 写区块数据为字节缓冲区
+     *
+     * 格式为：区块头 + 区块体。区块头、区块体格式参考对应结构体的注释。
+     * @param buffer
+     * @return
+     */
+    ByteBuffer &writeBuffer(ByteBuffer &buffer) const override;
 
 private:
 

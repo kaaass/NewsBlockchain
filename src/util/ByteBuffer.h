@@ -53,7 +53,7 @@ public:
      * @param size
      * @return
      */
-    ByteBuffer &push_back(void *data, size_t size);
+    ByteBuffer &push_back(void const *data, size_t size);
 
     /**
      * 在缓冲区头插入一个字节
@@ -68,7 +68,7 @@ public:
      * @param size
      * @return
      */
-    ByteBuffer &push_front(void *data, size_t size);
+    ByteBuffer &push_front(void const *data, size_t size);
 
     /**
      * 拼接缓冲区
@@ -101,6 +101,14 @@ public:
     Byte *data();
 
     /**
+     * 返回缓冲区数据首指针
+     *
+     * 使用时应该结合ByteBuffer::size返回的尺寸
+     * @return
+     */
+    Byte const *data() const;
+
+    /**
      * 创建缓冲区的分片
      *
      * @param start 开始下标，从开头取至结尾，为负即从尾部取
@@ -119,24 +127,24 @@ public:
 
     /**
      * 在缓冲区末尾以大端序插入一个16位无符号整数
-     * @param byte
+     * @param uShort
      * @return
      */
-    ByteBuffer &write(UShort byte);
+    ByteBuffer &write(UShort uShort);
 
     /**
      * 在缓冲区末尾以大端序插入一个32位无符号整数
-     * @param byte
+     * @param uInt
      * @return
      */
-    ByteBuffer &write(UInt byte);
+    ByteBuffer &write(UInt uInt);
 
     /**
      * 在缓冲区末尾以大端序插入一个64位无符号整数
-     * @param byte
+     * @param uLong
      * @return
      */
-    ByteBuffer &write(ULong byte);
+    ByteBuffer &write(ULong uLong);
 
     friend bool operator==(const ByteBuffer &, const ByteBuffer &);
 
@@ -157,7 +165,7 @@ public:
      * @param buffer
      * @return
      */
-    virtual ByteBuffer &writeBuffer(ByteBuffer &buffer) = 0;
+    virtual ByteBuffer &writeBuffer(ByteBuffer &buffer) const = 0;
 };
 
 
