@@ -153,8 +153,18 @@ TEST(TestChainBlock, testHashTreeIndexCalc) {
 }
 
 TEST(TestChainBlock, testDecompose) {
-    // TODO getDecomposedDataBlock
-    // TODO getAllDecomposedDataBlock
+    std::string data = "akakasd\n125s1\n 31 4a ";
+    UInt32 prevHash = 0x12344321u;
+
+    ChainBlock block(data, prevHash, 1u);
+
+    // getAllDecomposedDataBlock
+    auto decomp = block.getAllDecomposedDataBlock();
+    ASSERT_EQ(ByteBuffer::str("akakasd"), decomp[0]);
+    ASSERT_EQ(ByteBuffer::str("125s1"), decomp[1]);
+    ASSERT_EQ(ByteBuffer::str(" 31 4a "), decomp[2]);
+    // getDecomposedDataBlock
+    ASSERT_EQ(ByteBuffer::str(" 31 4a "), block.getDecomposedDataBlock(3));
 }
 
 TEST(TestChainBlock, testWriteBuffer) {
