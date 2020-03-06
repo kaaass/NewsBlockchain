@@ -111,7 +111,7 @@ TEST(TestByteBuffer, testWrite) {
 
     // ULong
     buf = ByteBuffer();
-    ULong uLong = 0x1234567887654321u;
+    auto uLong = (ULong) 0x1234567887654321u;
     buf.write(uLong);
     ASSERT_EQ(8u, buf.size());
     ASSERT_EQ(0x12u, buf[0]);
