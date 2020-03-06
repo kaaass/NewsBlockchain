@@ -1,4 +1,5 @@
 #include "Blockchain.h"
+#include <cassert>
 
 std::vector<std::reference_wrapper<ChainBlock>> Blockchain::GLOBAL_CHAIN;
 
