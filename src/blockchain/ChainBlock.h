@@ -4,6 +4,10 @@
 #include <util/Types.h>
 #include <util/ByteBuffer.h>
 
+#ifdef UNIT_TEST
+#include <gtest/gtest.h>
+#endif
+
 /**
  * 64位时间戳
  */
@@ -14,6 +18,7 @@ typedef ULong Timestamp;
  */
 class ChainBlock : public IByteBufferWriter {
 
+public:
     /*
      * 定义相关结构体
      */
@@ -107,6 +112,7 @@ class ChainBlock : public IByteBufferWriter {
         std::vector<ByteBuffer> dataBlocks;
     };
 
+private:
     /*
      * 定义字段与方法
      */
@@ -195,6 +201,13 @@ public:
     HashTreeIndex getHashTreeIndexById(DataBlockIndex ind) const;
 
     /**
+     * 判断哈希树下标位置的结点是否是填充空白
+     * @param ind
+     * @return
+     */
+    bool isHashTreePadding(HashTreeIndex ind) const;
+
+    /**
      * 写区块数据为字节缓冲区
      *
      * 格式为：区块头 + 区块体。区块头、区块体格式参考对应结构体的注释。
@@ -202,6 +215,13 @@ public:
      * @return
      */
     ByteBuffer &writeBuffer(ByteBuffer &buffer) const override;
+
+#ifdef UNIT_TEST
+    FRIEND_TEST(TestChainBlock, testConstruct);
+    FRIEND_TEST(TestChainBlock, testHashTree1);
+    FRIEND_TEST(TestChainBlock, testHashTree2);
+    FRIEND_TEST(TestChainBlock, testHashTreeIndexCalc);
+#endif
 
 private:
 
@@ -221,6 +241,10 @@ private:
      */
     static HashTreeIndex calcBlockHashOffset(DataBlockIndex size);
 };
+
+#define HTREE_LF(x) (2*(x)+1)
+#define HTREE_RT(x) (2*(x)+2)
+#define HTREE_PRT(x) (((x)-1)/2)
 
 
 #endif //NEWS_BLOCKCHAIN_CHAINBLOCK_H

@@ -146,6 +146,12 @@ public:
      */
     ByteBuffer &write(ULong uLong);
 
+    /**
+     * 清空缓冲区
+     * @return
+     */
+    ByteBuffer &clear();
+
     friend bool operator==(const ByteBuffer &, const ByteBuffer &);
 
     friend std::ostream &operator<<(std::ostream &, const ByteBuffer &);

@@ -32,6 +32,7 @@ ChainBlock::ChainBlock(const std::string &data, UInt32 prevHash, UInt blockId) {
 void ChainBlock::buildHashTree() {
     auto &hashTree = blockBody.hashTree;
     auto &bodyData = blockBody.dataBlocks;
+    ByteBuffer buf;
 
     ULong rest = bodyData.size();
 
@@ -41,19 +42,15 @@ void ChainBlock::buildHashTree() {
     }
 
     // 之后开始构建哈希树结构
-    bool leaveLayer = true;
-    while (rest > 0) {
-        ULong destSize;
+    while (rest > 1) {
+        ULong destSize, nextRest = rest;
 
+        // 计算剩余
+        if (nextRest % 2u == 1u)
+            nextRest++;
+        nextRest = nextRest >> 1u;
         // 计算目标大小
-        if (leaveLayer) {
-            // 叶子层无需填充
-            destSize = rest;
-            leaveLayer = false;
-        } else {
-            // 其它层填充至2次幂
-            destSize = IntUtil::next64Pow2(rest);
-        }
+        destSize = IntUtil::next64Pow2(nextRest);
 
         std::vector<UInt32> temp(destSize);
 
@@ -61,32 +58,29 @@ void ChainBlock::buildHashTree() {
         for (ULong i = 0; i < rest / 2; i++) {
             auto &hashLf = hashTree[2 * i];
             auto &hashRt = hashTree[2 * i + 1];
-            ByteBuffer buf;
+            buf.clear();
             buf.push_back(&hashLf, sizeof(UInt32));
             buf.push_back(&hashRt, sizeof(UInt32));
             temp[i] = Hash::run(buf);
         }
 
         // 有多余则与0x00000000计算哈希
-        if (rest % 2u >= 0) {
+        if (rest % 2u == 1u) {
             auto &hashLf = hashTree[rest - 1];
-            ByteBuffer buf;
+            buf.clear();
             buf.push_back(&hashLf, sizeof(UInt32));
             buf.push_back(0u).push_back(0u)
                     .push_back(0u).push_back(0u);
             temp[rest / 2] = Hash::run(buf);
-            // 计算方便
-            rest++;
         }
 
-        rest = rest >> 1u;
+        rest = nextRest;
         hashTree.insert(hashTree.begin(), temp.begin(), temp.end());
     }
 }
 
 ChainBlock::HashTreeIndex ChainBlock::calcBlockHashOffset(ChainBlock::DataBlockIndex size) {
-    ULong layer = log2(size + (double) 0.5);
-    return (1 + layer) * layer / 2;
+    return IntUtil::next64Pow2(size) - 1;
 }
 
 UInt32 ChainBlock::getBlockHash() const {
@@ -183,4 +177,9 @@ ByteBuffer &ChainBlock::writeBuffer(ByteBuffer &buffer) const {
         buffer.push_back(data.data(), data.size());
     }
     return buffer;
+}
+
+bool ChainBlock::isHashTreePadding(ChainBlock::HashTreeIndex ind) const {
+    // TODO
+    return false;
 }

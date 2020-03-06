@@ -124,3 +124,8 @@ ByteBuffer &ByteBuffer::write(ULong byte) {
             .push_back(data[3]).push_back(data[2])
             .push_back(data[1]).push_back(data[0]);
 }
+
+ByteBuffer &ByteBuffer::clear() {
+    bytes.clear();
+    return *this;
+}
