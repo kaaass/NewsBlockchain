@@ -2,6 +2,7 @@
 #define NEWS_BLOCKCHAIN_INT_H
 
 #include "Byte.h"
+#include "Types.h"
 #include <vector>
 
 /**
@@ -13,6 +14,7 @@ class UInt32 {
     static void uintToBytes(unsigned int, Byte (&bytes)[4]);
 
     static unsigned int byteToUint(const Byte (&bytes)[4]);
+
 public:
     UInt32() {
         bytes[0] = bytes[1] = bytes[2] = bytes[3] = 0x00;
@@ -20,9 +22,9 @@ public:
 
     UInt32(unsigned int val);
 
-    operator unsigned int();
+    operator unsigned int() const;
 
-    UInt32& operator = (unsigned int val);
+    UInt32 &operator=(unsigned int val);
 
     /**
      * 转换为字节vector
@@ -30,7 +32,7 @@ public:
      * 默认字节序不变，即大端
      * @return
      */
-    std::vector<Byte> toVector();
+    std::vector<Byte> toVector() const;
 };
 
 /**
@@ -42,6 +44,7 @@ class UInt16 {
     static void uintToBytes(unsigned short, Byte (&bytes)[2]);
 
     static unsigned short byteToUint(const Byte (&bytes)[2]);
+
 public:
     UInt16() {
         bytes[0] = bytes[1] = 0x00;
@@ -49,9 +52,9 @@ public:
 
     UInt16(unsigned short val);
 
-    operator unsigned short();
+    operator unsigned short() const;
 
-    UInt16& operator = (unsigned short val);
+    UInt16 &operator=(unsigned short val);
 
     /**
      * 转换为字节vector
@@ -59,7 +62,29 @@ public:
      * 默认字节序不变，即大端
      * @return
      */
-    std::vector<Byte> toVector();
+    std::vector<Byte> toVector() const;
+};
+
+/**
+ * 常用整数函数
+ */
+class IntUtil {
+
+public:
+
+    /**
+     * 计算32位无符号整数下一个2次幂
+     * @param val
+     * @return
+     */
+    static UInt next32Pow2(UInt val);
+
+    /**
+     * 计算64位无符号整数下一个2次幂
+     * @param val
+     * @return
+     */
+    static ULong next64Pow2(ULong val);
 };
 
 #endif //NEWS_BLOCKCHAIN_INT_H

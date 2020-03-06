@@ -3,6 +3,7 @@
 
 #include <util/Types.h>
 #include <vector>
+#include <string>
 
 /**
  * 字节缓冲区
@@ -25,6 +26,12 @@ public:
      */
     ByteBuffer(const std::vector<Byte> &buffer);
 
+    /**
+     * 将字符串转为字节缓冲区
+     * @param buffer
+     */
+    static ByteBuffer str(const std::string &str);
+
     ByteBuffer &operator=(const std::vector<Byte> &buffer);
 
     /**
@@ -46,7 +53,7 @@ public:
      * @param size
      * @return
      */
-    ByteBuffer &push_back(void *data, size_t size);
+    ByteBuffer &push_back(void const *data, size_t size);
 
     /**
      * 在缓冲区头插入一个字节
@@ -61,7 +68,7 @@ public:
      * @param size
      * @return
      */
-    ByteBuffer &push_front(void *data, size_t size);
+    ByteBuffer &push_front(void const *data, size_t size);
 
     /**
      * 拼接缓冲区
@@ -76,7 +83,7 @@ public:
      * @return
      */
     Byte &operator[](Index ind);
-    
+
     Byte operator[](Index ind) const;
 
     /**
@@ -92,6 +99,14 @@ public:
      * @return
      */
     Byte *data();
+
+    /**
+     * 返回缓冲区数据首指针
+     *
+     * 使用时应该结合ByteBuffer::size返回的尺寸
+     * @return
+     */
+    Byte const *data() const;
 
     /**
      * 创建缓冲区的分片
@@ -110,11 +125,53 @@ public:
      */
     ByteBuffer slice(Index start, Index end);
 
+    /**
+     * 在缓冲区末尾以大端序插入一个16位无符号整数
+     * @param uShort
+     * @return
+     */
+    ByteBuffer &write(UShort uShort);
+
+    /**
+     * 在缓冲区末尾以大端序插入一个32位无符号整数
+     * @param uInt
+     * @return
+     */
+    ByteBuffer &write(UInt uInt);
+
+    /**
+     * 在缓冲区末尾以大端序插入一个64位无符号整数
+     * @param uLong
+     * @return
+     */
+    ByteBuffer &write(ULong uLong);
+
+    /**
+     * 清空缓冲区
+     * @return
+     */
+    ByteBuffer &clear();
+
     friend bool operator==(const ByteBuffer &, const ByteBuffer &);
 
     friend std::ostream &operator<<(std::ostream &, const ByteBuffer &);
 
     ~ByteBuffer() = default;
+};
+
+/**
+ * 写字节缓冲区接口
+ */
+class IByteBufferWriter {
+
+public:
+
+    /**
+     * 向字节缓冲区中写入对象数据
+     * @param buffer
+     * @return
+     */
+    virtual ByteBuffer &writeBuffer(ByteBuffer &buffer) const = 0;
 };
 
 

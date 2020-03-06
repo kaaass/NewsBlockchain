@@ -17,6 +17,13 @@ TEST(TestByteBuffer, testConstruct) {
     ASSERT_EQ(5u, bufferB.size());
     for (int i = 0; i < 5; i++)
         ASSERT_EQ(data[i], bufferB[i]);
+
+    // 测试字符串
+    std::string str = "abcde";
+    ByteBuffer bufferC = ByteBuffer::str(str);
+    ASSERT_EQ(5u, bufferC.size());
+    for (ULong i = 0; i < str.size(); i++)
+        ASSERT_EQ(str[i], bufferC[i]);
 }
 
 TEST(TestByteBuffer, testOperate) {
@@ -77,7 +84,42 @@ TEST(TestByteBuffer, testSlice) {
 TEST(TestByteBuffer, testOutput) {
     std::stringstream sstream;
 
-    ByteBuffer buffer({0x12, 0x19, 0x50, 0x3f, 0x4f, 0xff});
+    ByteBuffer buffer({0x12, 0x19, 0x50, 0x3f, 0x4f, 0x0, 0xff});
     sstream << buffer;
-    ASSERT_EQ("12 19 50 3f 4f ff", sstream.str());
+    ASSERT_EQ("12 19 50 3f 4f 00 ff", sstream.str());
+}
+
+TEST(TestByteBuffer, testWrite) {
+    ByteBuffer buf;
+
+    // UShort
+    UShort ushort = 0x1234u;
+    buf.write(ushort);
+    ASSERT_EQ(2u, buf.size());
+    ASSERT_EQ(0x12u, buf[0]);
+    ASSERT_EQ(0x34u, buf[1]);
+
+    // UInt
+    buf = ByteBuffer();
+    UInt uInt = 0x12345678u;
+    buf.write(uInt);
+    ASSERT_EQ(4u, buf.size());
+    ASSERT_EQ(0x12u, buf[0]);
+    ASSERT_EQ(0x34u, buf[1]);
+    ASSERT_EQ(0x56u, buf[2]);
+    ASSERT_EQ(0x78u, buf[3]);
+
+    // ULong
+    buf = ByteBuffer();
+    auto uLong = (ULong) 0x1234567887654321u;
+    buf.write(uLong);
+    ASSERT_EQ(8u, buf.size());
+    ASSERT_EQ(0x12u, buf[0]);
+    ASSERT_EQ(0x34u, buf[1]);
+    ASSERT_EQ(0x56u, buf[2]);
+    ASSERT_EQ(0x78u, buf[3]);
+    ASSERT_EQ(0x87u, buf[4]);
+    ASSERT_EQ(0x65u, buf[5]);
+    ASSERT_EQ(0x43u, buf[6]);
+    ASSERT_EQ(0x21u, buf[7]);
 }

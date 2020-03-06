@@ -10,6 +10,10 @@ ByteBuffer::ByteBuffer(const std::vector<Byte> &buffer) {
     bytes = buffer;
 }
 
+ByteBuffer ByteBuffer::str(const std::string &str) {
+    return ByteBuffer((void *) str.data(), str.size());
+}
+
 size_t ByteBuffer::size() const {
     return bytes.size();
 }
@@ -18,7 +22,7 @@ ByteBuffer &ByteBuffer::push_back(Byte byte) {
     return push_back(&byte, 1u);
 }
 
-ByteBuffer &ByteBuffer::push_back(void *data, size_t size) {
+ByteBuffer &ByteBuffer::push_back(void const *data, size_t size) {
     bytes.insert(bytes.end(), (UChar *) data, (UChar *) data + size);
     return *this;
 }
@@ -27,7 +31,7 @@ ByteBuffer &ByteBuffer::push_front(Byte byte) {
     return push_front(&byte, 1u);
 }
 
-ByteBuffer &ByteBuffer::push_front(void *data, size_t size) {
+ByteBuffer &ByteBuffer::push_front(void const *data, size_t size) {
     bytes.insert(bytes.begin(), (UChar *) data, (UChar *) data + size);
     return *this;
 }
@@ -72,6 +76,10 @@ Byte *ByteBuffer::data() {
     return bytes.data();
 }
 
+Byte const *ByteBuffer::data() const {
+    return bytes.data();
+}
+
 ByteBuffer ByteBuffer::slice(ByteBuffer::Index start) {
     return this->slice(start, this->size());
 }
@@ -96,4 +104,28 @@ ByteBuffer &ByteBuffer::operator=(const std::vector<Byte> &buffer) {
 
 bool operator==(const ByteBuffer &bufferA, const ByteBuffer &bufferB) {
     return bufferA.bytes == bufferB.bytes;
+}
+
+ByteBuffer &ByteBuffer::write(UShort byte) {
+    auto data = reinterpret_cast<Byte *>(&byte);
+    return this->push_back(data[1]).push_back(data[0]);
+}
+
+ByteBuffer &ByteBuffer::write(UInt byte) {
+    auto data = reinterpret_cast<Byte *>(&byte);
+    return this->push_back(data[3]).push_back(data[2])
+            .push_back(data[1]).push_back(data[0]);
+}
+
+ByteBuffer &ByteBuffer::write(ULong byte) {
+    auto data = reinterpret_cast<Byte *>(&byte);
+    return this->push_back(data[7]).push_back(data[6])
+            .push_back(data[5]).push_back(data[4])
+            .push_back(data[3]).push_back(data[2])
+            .push_back(data[1]).push_back(data[0]);
+}
+
+ByteBuffer &ByteBuffer::clear() {
+    bytes.clear();
+    return *this;
 }

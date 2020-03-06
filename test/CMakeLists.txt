@@ -9,6 +9,8 @@ if (BUILD_TEST)
 
     find_package(Threads)
 
+    add_definitions(-D UNIT_TEST)
+
     add_executable(unit_test ${test_codes} ${src_files})
     target_include_directories(unit_test PUBLIC
             ../src)
