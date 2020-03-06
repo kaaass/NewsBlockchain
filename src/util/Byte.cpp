@@ -2,6 +2,7 @@
 #include "Types.h"
 #include <cassert>
 #include <sstream>
+#include <iomanip>
 
 Bit::operator unsigned char() {
     return b;
@@ -52,7 +53,7 @@ LittleEndianByte::operator unsigned char() const {
 std::string LittleEndianByte::toHexString() const {
     std::stringstream sstream;
     std::string ret;
-    sstream << std::hex << (UInt) val;
+    sstream << std::setw(2) << std::setfill('0') << std::hex << (UInt) val;
     sstream >> ret;
     return ret;
 }

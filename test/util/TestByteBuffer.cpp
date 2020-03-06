@@ -84,9 +84,9 @@ TEST(TestByteBuffer, testSlice) {
 TEST(TestByteBuffer, testOutput) {
     std::stringstream sstream;
 
-    ByteBuffer buffer({0x12, 0x19, 0x50, 0x3f, 0x4f, 0xff});
+    ByteBuffer buffer({0x12, 0x19, 0x50, 0x3f, 0x4f, 0x0, 0xff});
     sstream << buffer;
-    ASSERT_EQ("12 19 50 3f 4f ff", sstream.str());
+    ASSERT_EQ("12 19 50 3f 4f 00 ff", sstream.str());
 }
 
 TEST(TestByteBuffer, testWrite) {
