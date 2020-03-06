@@ -2,12 +2,15 @@
 #define NEWS_BLOCKCHAIN_BLOCKCHAIN_H
 
 #include <util/Types.h>
+#include <blockchain/ChainBlock.h>
 #include <vector>
 #include <string>
-#include <blockchain/ChainBlock.h>
+#include <functional>
 
 #ifdef UNIT_TEST
+
 #include <gtest/gtest.h>
+
 #endif
 
 /**
