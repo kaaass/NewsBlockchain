@@ -166,7 +166,7 @@ ByteBuffer &ChainBlock::writeBuffer(ByteBuffer &buffer) const {
      * 区块体
      */
     // 8字节              哈希树长度（不包含树根） hash_size
-    buffer.write(blockBody.hashTree.size() - 1);
+    buffer.write((ULong) blockBody.hashTree.size() - 1);
     // 4 * hash_size字节  哈希树（不包含树根）
     buffer.push_back(blockBody.hashTree.data() + 1, sizeof(UInt32) * (blockBody.hashTree.size() - 1));
     // 每块数据块
