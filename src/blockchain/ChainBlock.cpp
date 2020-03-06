@@ -168,11 +168,11 @@ ByteBuffer &ChainBlock::writeBuffer(ByteBuffer &buffer) const {
     // 8字节              哈希树长度（不包含树根） hash_size
     buffer.write(blockBody.hashTree.size() - 1);
     // 4 * hash_size字节  哈希树（不包含树根）
-    buffer.push_back(blockBody.hashTree.data() + 1, blockBody.hashTree.size() - 1);
+    buffer.push_back(blockBody.hashTree.data() + 1, sizeof(UInt32) * (blockBody.hashTree.size() - 1));
     // 每块数据块
     for (auto &data : blockBody.dataBlocks) {
         // 4字节      数据块内容长度 length
-        buffer.write(data.size());
+        buffer.write((UInt) data.size());
         // length字节 数据块内容
         buffer.push_back(data.data(), data.size());
     }

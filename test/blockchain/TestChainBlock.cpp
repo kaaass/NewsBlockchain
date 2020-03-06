@@ -13,9 +13,10 @@ TEST(TestChainBlock, testConstruct) {
 
     // 区块头
     // Hash 相关单独测试
-    ASSERT_EQ(1u, block.blockHeader.blockId);
-    ASSERT_EQ(prevHash, block.blockHeader.prevBlockHash);
-    ASSERT_GE(5, time(nullptr) - block.blockHeader.timestamp);
+    auto &header = block.getHeader();
+    ASSERT_EQ(1u, header.blockId);
+    ASSERT_EQ(prevHash, header.prevBlockHash);
+    ASSERT_GE(5, time(nullptr) - header.timestamp);
     ASSERT_EQ(3u, block.size());
 
     // 区块体
@@ -30,9 +31,14 @@ TEST(TestChainBlock, testConstruct) {
 
     // 区块体内容
     auto result = Huffman::compress(StringUtil::splitParagraph(data));
-    ASSERT_EQ(result.dictionary, block[0]);
+    ASSERT_EQ(result.dictionary, block.getDictBlock());
     ASSERT_EQ(result.data[0], block[1]);
     ASSERT_EQ(result.data[1], block[2]);
+
+    // const取下标
+    const auto &cBlock = block;
+    ASSERT_EQ(block[1], cBlock[1]);
+    ASSERT_EQ(block[2], cBlock[2]);
 }
 
 UInt32 hashFor(UInt32 a, UInt32 b) {
@@ -146,7 +152,67 @@ TEST(TestChainBlock, testHashTreeIndexCalc) {
         ASSERT_FALSE(block.isHashTreePadding(i));
 }
 
-TEST(TestChainBlock, testDataBlock) {
+TEST(TestChainBlock, testDecompose) {
     // TODO getDecomposedDataBlock
     // TODO getAllDecomposedDataBlock
+}
+
+TEST(TestChainBlock, testWriteBuffer) {
+    ByteBuffer expected;
+
+    std::string data = "123";
+    UInt32 prevHash = 0x12344321u;
+
+    ChainBlock block(data, prevHash, 1u);
+
+    /*
+     * 拼接正确的ByteBuffer
+     */
+    // 压缩
+    auto result = Huffman::compress(StringUtil::splitParagraph(data));
+    auto dataBlocks = std::vector<ByteBuffer>{result.dictionary, result.data[0]};
+    auto hashLf = Hash::run(dataBlocks[0]);
+    auto hashRt = Hash::run(dataBlocks[1]);
+    auto hashRoot = hashFor(hashLf, hashRt);
+    // 区块头
+    // 4字节 区块ID
+    expected.write(1u);
+    // 4字节 前一区块的哈希值
+    expected.write(prevHash);
+    // 4字节 哈希树树根
+    expected.write(hashRoot);
+    // 8字节 建块时间戳
+    expected.write(block.getHeader().timestamp);
+    // 8字节 数据块数量 block_size
+    expected.write((ULong) 2u);
+    // 区块体
+    // 8字节              哈希树长度（不包含树根） hash_size
+    expected.write((ULong) 2u);
+    // 4 * hash_size字节  哈希树（不包含树根）
+    expected.write(hashLf);
+    expected.write(hashRt);
+    // 每块数据块：
+    //  4字节      数据块内容长度 length
+    //  length字节 数据块内容
+    expected.write((UInt) dataBlocks[0].size());
+    expected = expected + dataBlocks[0];
+    expected.write((UInt) dataBlocks[1].size());
+    expected = expected + dataBlocks[1];
+
+    /*
+     * 校验
+     */
+    ByteBuffer actual;
+    block.writeBuffer(actual);
+    ASSERT_EQ(expected, actual);
+}
+
+TEST(TestChainBlock, testBlockHash) {
+    std::string data = "123\n3425\naasdasd";
+    UInt32 prevHash = 0x12344321u;
+
+    ChainBlock block(data, prevHash, 1u);
+    ByteBuffer buffer;
+    block.writeBuffer(buffer);
+    ASSERT_EQ(Hash::run(buffer), block.getBlockHash());
 }
