@@ -92,9 +92,12 @@ TEST(TestChainBlock, testHashTree2) {
     }
     // 其他节点
     for (ULong i = 0; i < offset; i++) {
-        if (block.isHashTreePadding(i))
-            continue;
         std::cout << "Test for: " << i << std::endl;
+        if (block.isHashTreePadding(i)) {
+            // 空白
+            ASSERT_EQ(UInt32(0x0u), hashTree[i]);
+            continue;
+        }
         auto rtIndex = HTREE_RT(i);
         UInt32 rt = rtIndex >= hashTree.size()
                     ? UInt32(0)
@@ -122,7 +125,25 @@ TEST(TestChainBlock, testHashTreeIndexCalc) {
     //15:b b b b b b b b b
     ASSERT_EQ(15u, ChainBlock::calcBlockHashOffset(9));
 
-    // TODO isHashTreePaddings
+    // isHashTreePadding
+
+    // 树形：
+    // 0:               x
+    // 1:       x              x
+    // 3:   x       x       x    _
+    // 7: x   x   x   x   x  _ _   _
+    //15:b b b b b b b b b
+    ChainBlock block("1\n2\n3\n4\n5\n6\n7\n8\n9", 0x0u, 1u);
+    for (ULong i = 0; i < 6; i++)
+        ASSERT_FALSE(block.isHashTreePadding(i));
+    ASSERT_TRUE(block.isHashTreePadding(6));
+    for (ULong i = 7; i < 7 + 5; i++)
+        ASSERT_FALSE(block.isHashTreePadding(i));
+    ASSERT_TRUE(block.isHashTreePadding(12));
+    ASSERT_TRUE(block.isHashTreePadding(13));
+    ASSERT_TRUE(block.isHashTreePadding(14));
+    for (ULong i = 15; i < 15 + 16; i++)
+        ASSERT_FALSE(block.isHashTreePadding(i));
 }
 
 TEST(TestChainBlock, testDataBlock) {

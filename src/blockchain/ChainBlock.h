@@ -240,6 +240,11 @@ private:
      * 计算blockHashOffset
      */
     static HashTreeIndex calcBlockHashOffset(DataBlockIndex size);
+
+    /**
+     * 判断哈希树下标位置的结点是否是填充空白
+     */
+    static bool isHashTreePadding(DataBlockIndex size, HashTreeIndex ind);
 };
 
 #define HTREE_LF(x) (2*(x)+1)

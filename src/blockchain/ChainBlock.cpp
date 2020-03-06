@@ -180,6 +180,18 @@ ByteBuffer &ChainBlock::writeBuffer(ByteBuffer &buffer) const {
 }
 
 bool ChainBlock::isHashTreePadding(ChainBlock::HashTreeIndex ind) const {
-    // TODO
-    return false;
+    if ((size_t) ind < getHashTree().size())
+        return isHashTreePadding(size(), ind);
+    else
+        return false; // 超界
+}
+
+bool ChainBlock::isHashTreePadding(ChainBlock::DataBlockIndex size, ChainBlock::HashTreeIndex ind) {
+    auto offset = IntUtil::next64Pow2(size) - 1;
+    // 不是最后一层递归处理
+    if (ind < offset) {
+        return isHashTreePadding(size, HTREE_LF(ind))
+               && isHashTreePadding(size, HTREE_RT(ind));
+    }
+    return ind >= offset + size;
 }
