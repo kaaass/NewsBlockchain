@@ -165,6 +165,8 @@ TEST(TestChainBlock, testDecompose) {
     ASSERT_EQ(ByteBuffer::str(" 31 4a "), decomp[2]);
     // getDecomposedDataBlock
     ASSERT_EQ(ByteBuffer::str(" 31 4a "), block.getDecomposedDataBlock(3));
+    // 字典不进行操作
+    ASSERT_EQ(block[0], block.getDecomposedDataBlock(0));
 }
 
 TEST(TestChainBlock, testWriteBuffer) {
