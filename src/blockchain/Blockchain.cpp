@@ -1,5 +1,7 @@
 #include "Blockchain.h"
 
+std::vector<std::reference_wrapper<ChainBlock>> Blockchain::GLOBAL_CHAIN;
+
 UInt Blockchain::create(const std::string &data) {
     ChainBlock *newBlock = nullptr;
     UInt32 prevHash;
@@ -30,9 +32,21 @@ size_t Blockchain::size() {
 }
 
 std::vector<std::reference_wrapper<const ChainBlock>> Blockchain::getGlobalChain() {
-    std::vector<std::reference_wrapper<const ChainBlock>> ret(size());
+    std::vector<std::reference_wrapper<const ChainBlock>> ret;
+    ret.reserve(size());
     for (auto &ref: GLOBAL_CHAIN) {
         ret.emplace_back(ref.get());
     }
     return ret;
 }
+
+#ifdef UNIT_TEST
+
+void Blockchain::clear() {
+    for (auto &ref: GLOBAL_CHAIN) {
+        delete &ref.get();
+    }
+    GLOBAL_CHAIN.clear();
+}
+
+#endif

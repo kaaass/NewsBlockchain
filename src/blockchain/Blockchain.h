@@ -6,6 +6,10 @@
 #include <string>
 #include <blockchain/ChainBlock.h>
 
+#ifdef UNIT_TEST
+#include <gtest/gtest.h>
+#endif
+
 /**
  * 区块链管理类
  */
@@ -30,7 +34,7 @@ public:
      * @param blockId
      * @return
      */
-    static const ChainBlock& get(UInt blockId);
+    static const ChainBlock &get(UInt blockId);
 
     /**
      * 当前区块链大小
@@ -43,6 +47,20 @@ public:
      * @return
      */
     static std::vector<std::reference_wrapper<const ChainBlock>> getGlobalChain();
+
+#ifdef UNIT_TEST
+
+    /**
+     * 清空区块链
+     *
+     * 仅在单元测试中可见。
+     * @return
+     */
+    static void clear();
+
+    FRIEND_TEST(TestBlockchain, testCreate);
+
+#endif
 };
 
 #endif //NEWS_BLOCKCHAIN_BLOCKCHAIN_H
