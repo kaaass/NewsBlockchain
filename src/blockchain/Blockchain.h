@@ -6,6 +6,9 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <util/StringUtil.h>
+#include <huffman/Huffman.h>
+#include <hash/Hash.h>
 
 #ifdef UNIT_TEST
 
@@ -57,6 +60,14 @@ public:
      *  @return
      */
     static bool check();
+
+    /**
+     * 判断给定新闻是否篡改过
+     * @param data
+     * @param blockId
+     * @return 获取篡改新闻所在自然段
+     */
+     static std::vector<UInt32> validateNews(const std::string &data, UInt blockId);
 
 #ifdef UNIT_TEST
 

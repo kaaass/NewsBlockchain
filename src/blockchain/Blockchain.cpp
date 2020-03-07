@@ -61,6 +61,30 @@ bool Blockchain::check() {
     return true;
 }
 
+std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt blockId) {
+    std::vector<ByteBuffer> bodyData; // 数据项
+    std::vector<UInt32> wrongVec; // 数据项对应的hash
+    UInt32 sectionNumber = 0u; // 段落序号
+    auto paras = StringUtil::splitParagraph(data); // 分段
+
+    const std::vector<UInt32> & hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
+    const std::vector<UInt32> hashVec(hashTree.cend()-paras.size(), hashTree.cend()); // blockId对应的hashTree
+    auto compResult = Huffman::compress(paras); // 压缩
+    auto &compData = compResult.data;
+    bodyData.insert(bodyData.end(), compData.begin(), compData.end());
+
+    // 计算哈希
+    for (auto &buffer : bodyData) {
+        UInt32 bufferHash = Hash::run(buffer);
+        if(bufferHash != hashVec[sectionNumber]) {
+            wrongVec.push_back(sectionNumber+1); // 自然段从1开始
+        }
+        sectionNumber = sectionNumber + 1;
+    }
+    return wrongVec;
+}
+
+
 #ifdef UNIT_TEST
 
 void Blockchain::clear() {

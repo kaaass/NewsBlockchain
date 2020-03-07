@@ -54,3 +54,22 @@ TEST(TestBlockchain, testCheck)
     Blockchain::create("abc\n c b a\na bc12 3");
     ASSERT_TRUE(Blockchain::check());
 }
+
+TEST(TestBlockchain, testValidateNews)
+{
+    Blockchain::clear();
+
+    Blockchain::create("123123");
+    Blockchain::create("abc\ncba\nabc");
+    Blockchain::create("abc\n c b a\na bc12 3");
+
+    std::string test0 = "123123";
+    std::vector<UInt32> vec0;
+    ASSERT_EQ(vec0, Blockchain::validateNews(test0, 0));
+    std::string test1 = "12312";
+    std::vector<UInt32> vec1 {1};
+    ASSERT_EQ(vec1, Blockchain::validateNews(test1, 0));
+    std::string test2 = "ab\ncb\nab";
+    std::vector<UInt32> vec2 {1,2,3};
+    ASSERT_EQ(vec2, Blockchain::validateNews(test2, 1));
+}
