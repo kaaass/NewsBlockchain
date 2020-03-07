@@ -51,6 +51,13 @@ public:
      */
     static std::vector<std::reference_wrapper<const ChainBlock>> getGlobalChain();
 
+    /**
+     *  检测区块头中包含的前一区块的哈希值 和 真实的前一区块的哈希值 是否相同
+     *  @param
+     *  @return
+     */
+    static bool check();
+
 #ifdef UNIT_TEST
 
     /**

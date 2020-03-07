@@ -41,6 +41,26 @@ std::vector<std::reference_wrapper<const ChainBlock>> Blockchain::getGlobalChain
     return ret;
 }
 
+bool Blockchain::check() {
+    UInt32 prevRealHash = 0u;  // 第一块为0
+    UInt32 prevBlockHash; // 存储在区块中前一块的哈希值
+    UInt32 blockID = 0u;
+
+    for (auto iter = GLOBAL_CHAIN.cbegin(); iter != GLOBAL_CHAIN.cend(); iter++) {
+        // 获取存储在区块中前一块的哈希值
+        prevBlockHash = iter->get().getPrevBlockHash();
+        // 计算真实的前一块哈希
+        blockID = iter - GLOBAL_CHAIN.cbegin();
+        if (blockID > 0) {
+            prevRealHash = get(blockID - 1).getBlockHash();
+        }
+        if(prevBlockHash != prevRealHash) {
+            return false;
+        }
+    }
+    return true;
+}
+
 #ifdef UNIT_TEST
 
 void Blockchain::clear() {

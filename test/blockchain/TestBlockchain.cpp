@@ -42,3 +42,15 @@ TEST(TestBlockchain, testCreate) {
 
     Blockchain::clear();
 }
+
+TEST(TestBlockchain, testCheck)
+{
+    Blockchain::clear();
+
+    Blockchain::create("123123");
+    ASSERT_TRUE(Blockchain::check());
+    Blockchain::create("abc\ncba\nabc");
+    ASSERT_TRUE(Blockchain::check());
+    Blockchain::create("abc\n c b a\na bc12 3");
+    ASSERT_TRUE(Blockchain::check());
+}
