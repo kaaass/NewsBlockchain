@@ -1,0 +1,70 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "kaaass",
+      "name": "KAAAsS",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/13360135?v=4",
+      "profile": "https://github.com/kaaass",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "ztmail723",
+      "name": "ZT",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/44718750?v=4",
+      "profile": "https://github.com/ztmail723",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Victoria1216",
+      "name": "Victoria1216",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/56854008?v=4",
+      "profile": "https://github.com/Victoria1216",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "xiaolllll",
+      "name": "xiaolllll",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/49188794?v=4",
+      "profile": "https://github.com/xiaolllll",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ningningdashuibi",
+      "name": "ningningdashuibi",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/52128671?v=4",
+      "profile": "https://github.com/ningningdashuibi",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "AutumnZ0713",
+      "name": "AutumnZ0713",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/61734230?v=4",
+      "profile": "https://github.com/AutumnZ0713",
+      "contributions": [
+        "content"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "NewsBlockchain",
+  "projectOwner": "kaaass",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

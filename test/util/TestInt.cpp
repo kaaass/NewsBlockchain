@@ -25,3 +25,23 @@ TEST(TestInt, testToVector) {
     ASSERT_EQ(0x65u, (UInt) vec[0]);
     ASSERT_EQ(0x43u, (UInt) vec[1]);
 }
+
+TEST(TestIntUtil, testNextPow2) {
+    // 32-bit
+    ASSERT_EQ((UInt) 1u, IntUtil::next32Pow2(1u));
+    ASSERT_EQ((UInt) 4u, IntUtil::next32Pow2(3u));
+    ASSERT_EQ((UInt) 8u, IntUtil::next32Pow2(8u));
+    ASSERT_EQ((UInt) 128u, IntUtil::next32Pow2(123u));
+    ASSERT_EQ(((UInt) 1u) << 14u, IntUtil::next32Pow2((1u << 13u) + 123u));
+    ASSERT_EQ(((UInt) 1u) << 31u, IntUtil::next32Pow2((1u << 30u) + 123u));
+    // 64-bit
+    ASSERT_EQ((ULong) 1u, IntUtil::next64Pow2(1u));
+    ASSERT_EQ((ULong) 4u, IntUtil::next64Pow2(3u));
+    ASSERT_EQ((ULong) 8u, IntUtil::next64Pow2(8u));
+    ASSERT_EQ((ULong) 128u, IntUtil::next64Pow2(123u));
+    ASSERT_EQ((ULong) 256u, IntUtil::next64Pow2(153u));
+    ASSERT_EQ(((ULong) 1u) << 14u, IntUtil::next64Pow2((1u << 13u) + 123u));
+    ASSERT_EQ(((ULong) 1u) << 31u, IntUtil::next64Pow2((1u << 30u) + 123u));
+    ASSERT_EQ(((ULong) 1u) << 50u, IntUtil::next64Pow2(((ULong) 1u << 49u) + 666u));
+    ASSERT_EQ(((ULong) 1u) << 63u, IntUtil::next64Pow2(((ULong) 1u << 62u) + 12345u));
+}
