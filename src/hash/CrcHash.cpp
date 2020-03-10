@@ -7,7 +7,7 @@ UInt32 CrcHash::run(const ByteBuffer& buffer) {
 
 	char const * str = reinterpret_cast<char const *>(buffer.data());
 
-    unsigned int        nleft = strlen(str);//得到字符串的长度，以char为单位。
+    unsigned int        nleft = buffer.size();//得到字符串的长度，以char为单位。
     unsigned long long  sum = 0;
     unsigned short int* w = (unsigned short int*)str; //将char*转换为short int*
     unsigned short int  answer = 0;
