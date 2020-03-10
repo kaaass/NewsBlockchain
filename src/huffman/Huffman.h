@@ -2,7 +2,6 @@
 #define NEWS_BLOCKCHAIN_HUFFMAN_H
 
 #include <util/ByteBuffer.h>
-
 /**
  * Huffman压缩的对外接口
  */

@@ -33,6 +33,7 @@ TEST(TestByte, testOutput) {
     // 测试十六进制字符串
     byte = 0x9fu;
     ASSERT_EQ("9f", byte.toHexString());
+	system("pause");
 }
 
 TEST(TestByte, testEqual) {
