@@ -1,6 +1,6 @@
 # NewsBlockchain
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 | 构建平台  | 结果                                                       |
@@ -61,6 +61,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Victoria1216"><img src="https://avatars3.githubusercontent.com/u/56854008?v=4" width="100px;" alt=""/><br /><sub><b>Victoria1216</b></sub></a><br /><a href="https://github.com/kaaass/NewsBlockchain/commits?author=Victoria1216" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/xiaolllll"><img src="https://avatars3.githubusercontent.com/u/49188794?v=4" width="100px;" alt=""/><br /><sub><b>xiaolllll</b></sub></a><br /><a href="https://github.com/kaaass/NewsBlockchain/commits?author=xiaolllll" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ningningdashuibi"><img src="https://avatars2.githubusercontent.com/u/52128671?v=4" width="100px;" alt=""/><br /><sub><b>ningningdashuibi</b></sub></a><br /><a href="https://github.com/kaaass/NewsBlockchain/commits?author=ningningdashuibi" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/AutumnZ0713"><img src="https://avatars1.githubusercontent.com/u/61734230?v=4" width="100px;" alt=""/><br /><sub><b>AutumnZ0713</b></sub></a><br /><a href="#content-AutumnZ0713" title="Content">🖋</a></td>
   </tr>
 </table>
 
