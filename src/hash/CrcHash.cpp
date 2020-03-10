@@ -1,10 +1,11 @@
 #include "CrcHash.h"
 
 #include <cstdlib>
-//reinterpret_cast
+#include <cstring>
+//
 UInt32 CrcHash::run(const ByteBuffer& buffer) {
 
-	char const * str = (char *)(buffer.data());
+	char const * str = reinterpret_cast<char const *>(buffer.data());
 
     unsigned int        nleft = strlen(str);//得到字符串的长度，以char为单位。
     unsigned long long  sum = 0;
