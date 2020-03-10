@@ -1,12 +1,12 @@
 #include "Hash.h"
-
+#include "CrcHash.h"
 #include <cstdlib>
 
 IHashFunc *Hash::DEFAULT_HASH = nullptr;
 
 IHashFunc *Hash::getDefaultHash() {
     // TODO 修改成靠谱的哈希函数
-    return new SimpleHash;
+    return new CrcHash;
 }
 
 UInt32 Hash::run(const ByteBuffer &buffer) {

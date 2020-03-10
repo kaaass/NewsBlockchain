@@ -5,7 +5,7 @@
 #include <string>
 
 class SimpleHash;
-
+class CrcHash;
 /**
  * 哈希函数管理类
  * 若要计算哈希，可以使用Hash::run函数
