@@ -43,6 +43,34 @@ public:
      * @return 解压结果
      */
     static ByteBuffer decompress(const ByteBuffer& dict, const ByteBuffer& data);
+
+public:
+	class HuffmanTree {
+	public:
+		class Node {
+		public:
+			Byte value;//叶子节点的Byte有效，非叶子节点的Byte无意义
+			int weight;//权
+			Node* left;
+			Node* right;
+
+			//std::sort的排序优先级函数
+			struct cmp {
+				bool operator()(Node *&a, Node *&b) const;
+			};
+
+			/* 
+			 * 构造函数指定权，左儿子，右儿子，Byte
+			 */
+			Node(ULong len = 0, Node *le = nullptr, Node *ri = nullptr, Byte val = 0b11111111u);
+
+			~Node();
+		};
+		Node *root;//Huffman树的根节点
+
+		HuffmanTree(const std::vector<ByteBuffer> &data);
+		void creatHuffman(const std::vector<ByteBuffer> &data);
+	};
 };
 
 #endif //NEWS_BLOCKCHAIN_HUFFMAN_H
