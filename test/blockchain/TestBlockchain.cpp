@@ -72,4 +72,13 @@ TEST(TestBlockchain, testValidateNews)
     std::string test2 = "ab\ncb\nab";
     std::vector<UInt32> vec2 {1,2,3};
     ASSERT_EQ(vec2, Blockchain::validateNews(test2, 1));
+    std::string test3 = "abc\ncb";
+    std::vector<UInt32> vec3 {2,3};
+    ASSERT_EQ(vec3, Blockchain::validateNews(test3, 1));
+    std::string test4 = "abc\ncba\n";
+    std::vector<UInt32> vec4 = {3};
+    ASSERT_EQ(vec4, Blockchain::validateNews(test4, 1));
+    std::string test5 = "abc\n c b a\na bc12 3\nav";
+    std::vector<UInt32> vec5 {4};
+    ASSERT_EQ(vec5, Blockchain::validateNews(test5, 2));
 }
