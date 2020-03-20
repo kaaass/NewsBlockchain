@@ -216,6 +216,11 @@ public:
      */
     ByteBuffer &writeBuffer(ByteBuffer &buffer) const override;
 
+    /*
+   *haskeyword 看起来很nb的样子
+   */
+    static bool hasKeyword();
+
 #ifdef UNIT_TEST
     FRIEND_TEST(TestChainBlock, testConstruct);
     FRIEND_TEST(TestChainBlock, testHashTree1);
@@ -245,6 +250,9 @@ private:
      * 判断哈希树下标位置的结点是否是填充空白
      */
     static bool isHashTreePadding(DataBlockIndex size, HashTreeIndex ind);
+
+
+   
 };
 
 #define HTREE_LF(x) (2*(x)+1)

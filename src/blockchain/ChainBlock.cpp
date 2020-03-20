@@ -195,3 +195,8 @@ bool ChainBlock::isHashTreePadding(ChainBlock::DataBlockIndex size, ChainBlock::
     }
     return ind >= offset + size;
 }
+
+bool ChainBlock::hasKeyword()
+{
+    return true;
+}
