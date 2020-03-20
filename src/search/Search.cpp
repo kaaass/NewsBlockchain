@@ -1,5 +1,5 @@
 #include "Search.h"
-#include <vector>
+
 
 std::vector<ByteBuffer> Search::search(std::vector<std::string>keyWords) {
 
@@ -50,7 +50,37 @@ std::vector<ByteBuffer> Search::search(std::vector<std::string>keyWords) {
 
 int Search::Sunday(ByteBuffer & key, std::vector<ByteBuffer> & block)
 {
+	getMovelenth(key);
+	ByteBuffer newByteBuffer;
+	for (auto i = 0u; i < block.size(); i++)
+		newByteBuffer = newByteBuffer.operator+(block.operator[](i));//Æ´½Ó»º³åÇø
+	Byte* k = key.data();
+	Byte* b = newByteBuffer.data();
+	int klen = key.size();
+	int bufflen = newByteBuffer.size();
+	int i = 0, count = 0, j;
+	while (i <bufflen)
+	{
+		 j = 0;
+		 for (; j < klen && i + j < bufflen && b[i + j] == k[j]; ++j);
+		 
+		 if (j >= klen)
+			 count++;
+		 if (i + klen >= bufflen)
+			 return count;
+		 i += moveLenth[k[i + klen]];
 
-	return 0;
+	}
+
+}
+
+void Search::getMovelenth(const ByteBuffer& key)
+{
+	int klen = key.size();
+
+	for (auto i = 0; i < MAXNUM; i++)
+		moveLenth[i] = klen + 1;
+	for (auto i = 0; i < klen; i++)
+		moveLenth[key.operator[](i)] = klen - i;
 }
 

@@ -9,10 +9,21 @@
 #include <util/StringUtil.h>
 #include <util/Int.h>
 
+
+#ifdef UNIT_TEST
+
+#include <gtest/gtest.h>
+
+#endif
+
+
+#define MAXNUM 256
 /*
 * 关键字搜索接口
 */
 class Search {
+	
+	static  int moveLenth[MAXNUM];
 	
 public:
 	
@@ -36,6 +47,13 @@ public:
 	*/
 
 	static int Sunday(ByteBuffer &, std::vector<ByteBuffer> &);
+
+
+	/*
+	*得到sunday算法中模式串的偏移量
+	*/
+
+	static void getMovelenth(const ByteBuffer& key);
 
 }
 
