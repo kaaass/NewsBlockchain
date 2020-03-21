@@ -1,20 +1,21 @@
+#pragma once
 #ifndef NEWS_BLOCKCHAIN_SEARCH_H
 #define NEWS_BLOCKCHAIN_SEARCH_H
 
-#include <util/Types.h>
+
+
 #include <blockchain/ChainBlock.h>
 #include <blockchain/Blockchain.h>
-#include <vector>
-#include <string>
-#include <util/StringUtil.h>
-#include <util/Int.h>
 
 
+
+/*
 #ifdef UNIT_TEST
 
 #include <gtest/gtest.h>
 
 #endif
+*/
 
 
 #define MAXNUM 256
@@ -22,12 +23,12 @@
 * 关键字搜索接口
 */
 class Search {
+
 	
-	static  int moveLenth[MAXNUM];
-	
+	static  std::vector<int> moveLenth;
 public:
 	
-	struct Max{
+	struct Max {
 		int count;
 		UInt32 id;
 	};
@@ -36,8 +37,8 @@ public:
 	* 输入关键字
 	* 返回整个区块体（除字典）
 	*/
-	
-	static std::vector<ByteBuffer>  search(std::vector<std::string>keyWords);
+
+	static std::vector<ByteBuffer>  search(std::vector<std::string>& keyWords);
 
 
 	/*
@@ -46,26 +47,18 @@ public:
 	*  返回对某一关键字在该区块中匹配的次数
 	*/
 
-	static int Sunday(ByteBuffer &, std::vector<ByteBuffer> &);
+	static int Sunday(ByteBuffer& key, std::vector<ByteBuffer>& block);
 
 
 	/*
 	*得到sunday算法中模式串的偏移量
 	*/
 
-	static void getMovelenth(const ByteBuffer& key);
+	static void getMovelenth( ByteBuffer& key);
 
-}
-
-
+};
 
 
-
-
-
-
-
-
-#endif
+#endif // NEWS_BLOCKCHAIN_SEARCH_H
 
 

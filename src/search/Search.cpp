@@ -1,12 +1,15 @@
 #include "Search.h"
 
+ std::vector<ByteBuffer> Search::search(std::vector<std::string>& keyWords) {
 
-std::vector<ByteBuffer> Search::search(std::vector<std::string>keyWords) {
-
-	Max max{0, 0};
+	Max max{ 0, 0 };
 	std::vector<ByteBuffer> key;//chushihua
 	if (keyWords.empty())
-		return;
+	{
+		std::vector<ByteBuffer> nullBlock;
+		return nullBlock;
+	}
+
 	//字符串转字节流
 	for (auto const& value : keyWords)
 	{
@@ -17,13 +20,13 @@ std::vector<ByteBuffer> Search::search(std::vector<std::string>keyWords) {
 
 
 	auto temp = Blockchain::getGlobalChain();//返回区块链的引用
-	for (auto& blockRef : temp) 
+	for (auto& blockRef : temp)
 	{
 		auto realBlock = blockRef.get();
 		if (realBlock.hasKeyword())
 		{
 			std::vector<ByteBuffer> ret = realBlock.getAllDecomposedDataBlock();//得到所有数据块的解压数据
-			int total = 0,num=0;
+			int total = 0, num = 0;
 			for (auto& k : key)
 			{
 				num = Sunday(k, ret);
@@ -32,23 +35,28 @@ std::vector<ByteBuffer> Search::search(std::vector<std::string>keyWords) {
 				else
 					total += num;
 			}
-			if(total>max.count)
+			if (total>max.count)
 			{
 				max.count = total;
 				max.id = realBlock.getHeader().blockId;
 			}
-			
-			
+
+
 		}
 
 
 	}
-	
+
 	if (max.count)
 		return Blockchain::get(max.id).getAllDecomposedDataBlock();
+	else
+	{
+		std::vector<ByteBuffer> nullBlock;
+		return nullBlock;
+	}
 }
 
-int Search::Sunday(ByteBuffer & key, std::vector<ByteBuffer> & block)
+int Search::Sunday(ByteBuffer& key, std::vector<ByteBuffer>& block)
 {
 	getMovelenth(key);
 	ByteBuffer newByteBuffer;
@@ -74,12 +82,12 @@ int Search::Sunday(ByteBuffer & key, std::vector<ByteBuffer> & block)
 
 }
 
-void Search::getMovelenth(const ByteBuffer& key)
+void Search::getMovelenth( ByteBuffer& key)
 {
 	int klen = key.size();
 
 	for (auto i = 0; i < MAXNUM; i++)
-		moveLenth[i] = klen + 1;
+		moveLenth.push_back(klen + 1);
 	for (auto i = 0; i < klen; i++)
 		moveLenth[key.operator[](i)] = klen - i;
 }
