@@ -1,5 +1,5 @@
 #include "Search.h"
-
+std::vector<int> Search::moveLenth;
  std::vector<ByteBuffer> Search::search(std::vector<std::string>& keyWords) {
 
 	Max max{ 0, 0 };
@@ -29,13 +29,14 @@
 			int total = 0, num = 0;
 			for (auto& k : key)
 			{
+
 				num = Sunday(k, ret);
 				if (num == 0)
 					break;
 				else
 					total += num;
 			}
-			if (total>max.count)
+			if (total > max.count)
 			{
 				max.count = total;
 				max.id = realBlock.getHeader().blockId;
@@ -82,7 +83,7 @@ int Search::Sunday(ByteBuffer& key, std::vector<ByteBuffer>& block)
 
 }
 
-void Search::getMovelenth( ByteBuffer& key)
+void Search::getMovelenth( ByteBuffer &key)
 {
 	int klen = key.size();
 
