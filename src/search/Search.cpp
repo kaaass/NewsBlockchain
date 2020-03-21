@@ -16,7 +16,7 @@ std::vector<int> Search::moveLenth;
 		key.push_back(ByteBuffer::str(value));
 	}
 
-	//ByteBuffer& key = ByteBuffer::str(str);//得到关键字字节缓冲区
+	
 
 
 	auto temp = Blockchain::getGlobalChain();//返回区块链的引用
