@@ -63,10 +63,11 @@ int Search::Sunday(ByteBuffer& key, std::vector<ByteBuffer>& block)
 	ByteBuffer newByteBuffer;
 	for (auto i = 0u; i < block.size(); i++)
 		newByteBuffer = newByteBuffer.operator+(block.operator[](i));//Æ´½Ó»º³åÇø
-	Byte* k = key.data();
-	Byte* b = newByteBuffer.data();
+	auto k = key.data();
+	auto b = newByteBuffer.data();
 	int klen = key.size();
 	int bufflen = newByteBuffer.size();
+	bool flag = false;
 	int i = 0, count = 0, j;
 	while (i <bufflen)
 	{
@@ -74,10 +75,20 @@ int Search::Sunday(ByteBuffer& key, std::vector<ByteBuffer>& block)
 		 for (; j < klen && i + j < bufflen && b[i + j] == k[j]; ++j);
 		 
 		 if (j >= klen)
+		 {
 			 count++;
+			 flag = true;
+		 }
 		 if (i + klen >= bufflen)
 			 return count;
-		 i += moveLenth[k[i + klen]];
+		 if (flag)
+		 {
+			 i += klen;
+			 flag == false;
+		 }
+			 
+		 else
+			i += moveLenth[b[i + klen]];
 
 	}
 
