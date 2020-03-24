@@ -67,7 +67,7 @@ public:
      * @param blockId
      * @return 获取篡改新闻所在自然段
      */
-     static std::vector<UInt32> validateNews(const std::string &data, UInt blockId);
+    static std::vector<UInt32> validateNews(const std::string &data, UInt blockId);
 
 #ifdef UNIT_TEST
 
@@ -80,6 +80,7 @@ public:
     static void clear();
 
     FRIEND_TEST(TestBlockchain, testCreate);
+    FRIEND_TEST(TestBlockchain, testCheck);
 
 #endif
 };

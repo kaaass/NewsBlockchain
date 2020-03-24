@@ -54,7 +54,7 @@ bool Blockchain::check() {
         if (blockID > 0) {
             prevRealHash = get(blockID - 1).getBlockHash();
         }
-        if(prevBlockHash != prevRealHash) {
+        if (prevBlockHash != prevRealHash) {
             return false;
         }
     }
@@ -67,27 +67,28 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
     UInt32 sectionNumber = 0u; // 段落序号
     auto paras = StringUtil::splitParagraph(data); // 分段
     const ChainBlock::DataBlockIndex newsSize = paras.size();
-    const std::vector<UInt32> & hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
+    const std::vector<UInt32> &hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
     const ChainBlock::DataBlockIndex realSize = get(blockId).size() - 1; // 除去字典
-    const std::vector<UInt32> hashVec(hashTree.cend()-realSize, hashTree.cend()); // blockId对应的数据项的hash
+    const std::vector<UInt32> hashVec(hashTree.cend() - realSize, hashTree.cend()); // blockId对应的数据项的hash
     auto compResult = Huffman::compress(paras); // 压缩
     auto &compData = compResult.data;
     bodyData.insert(bodyData.end(), compData.begin(), compData.end());
 
-    for (sectionNumber = 0; sectionNumber<realSize && sectionNumber<newsSize; sectionNumber=sectionNumber+1) { // 修改的段落
+    for (sectionNumber = 0;
+         sectionNumber < realSize && sectionNumber < newsSize; sectionNumber = sectionNumber + 1) { // 修改的段落
         UInt32 bufferHash = Hash::run(bodyData[sectionNumber]);
-        if(bufferHash != hashVec[sectionNumber]) {
-            wrongVec.emplace_back(sectionNumber+1); // 自然段从1开始
+        if (bufferHash != hashVec[sectionNumber]) {
+            wrongVec.emplace_back(sectionNumber + 1); // 自然段从1开始
         }
     }
-    if(sectionNumber == newsSize) { // 缺少的段落
-        while(sectionNumber < realSize) {
-            wrongVec.emplace_back(sectionNumber+1);
+    if (sectionNumber == newsSize) { // 缺少的段落
+        while (sectionNumber < realSize) {
+            wrongVec.emplace_back(sectionNumber + 1);
             return wrongVec;
         }
     }
     while (sectionNumber < newsSize) { // 增加的段落
-        wrongVec.emplace_back(sectionNumber+1);
+        wrongVec.emplace_back(sectionNumber + 1);
         return wrongVec;
     }
 }
