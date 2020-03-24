@@ -6,7 +6,7 @@
 
 #include <blockchain/ChainBlock.h>
 #include <blockchain/Blockchain.h>
-
+#include <algorithm>
 
 
 /*
@@ -22,6 +22,7 @@
 /*
 * 关键字搜索接口
 */
+
 class Search {
 
 	
@@ -38,7 +39,7 @@ public:
 	* 返回整个区块体（除字典）
 	*/
 
-	static std::vector<ByteBuffer>  search(std::vector<std::string>& keyWords);
+	static std::vector<UInt32>  search(std::vector<std::string>& keyWords);
 
 
 	/*
@@ -58,6 +59,8 @@ public:
 
 };
 
+int location(int a, int b, int c, int d);
+bool isChar(Byte & b);
 
 #endif // NEWS_BLOCKCHAIN_SEARCH_H
 

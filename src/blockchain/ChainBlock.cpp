@@ -196,7 +196,7 @@ bool ChainBlock::isHashTreePadding(ChainBlock::DataBlockIndex size, ChainBlock::
     return ind >= offset + size;
 }
 
-bool ChainBlock::hasKeyword()
+bool ChainBlock::hasKeyword(const std::vector<std::string>& keywords)
 {
     return true;
 }

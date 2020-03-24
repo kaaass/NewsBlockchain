@@ -9,8 +9,8 @@ TEST(testSearch,testSunday) {
 	key=ByteBuffer::str("abc");
 	
 	std::vector<ByteBuffer> block;
-	ByteBuffer a = ByteBuffer::str("aaaabc");
-	ByteBuffer b = ByteBuffer::str("cdfabcw");
+	ByteBuffer a = ByteBuffer::str("abc");
+	ByteBuffer b = ByteBuffer::str("  cdfabcw abc");
 	block.push_back(a);
 	block.push_back(b);
 	ByteBuffer* c = &block[0];
@@ -35,6 +35,21 @@ TEST(testSearch, testgetMovelenth)
 	ASSERT_EQ(move['a'], 3);
 	ASSERT_EQ(move['b'], 2);
 	ASSERT_EQ(move[key.operator[](2)], 1);
+	
+}
+
+TEST(testSearch, testsearch)
+{
+	
+	Blockchain::create("abc\nabcc\nccc\nabcc abcc\nac \nccc");
+	Blockchain::create("ccc abcb\nabc\nac");
+	Blockchain::create("cac\nabcabc\nac");
+	ASSERT_EQ(3u, Blockchain::size());
+	std::vector<std::string> key;
+	key.push_back("abc");
+	key.push_back("ac");
+	key.push_back("ccc");
+	ASSERT_EQ( (UInt32)2, Search::search(key).size());
 	
 }
 

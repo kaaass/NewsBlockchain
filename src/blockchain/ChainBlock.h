@@ -219,7 +219,7 @@ public:
     /*
    *haskeyword 看起来很nb的样子
    */
-    static bool hasKeyword();
+     bool hasKeyword(const std::vector<std::string>& keywords);
 
 #ifdef UNIT_TEST
     FRIEND_TEST(TestChainBlock, testConstruct);
