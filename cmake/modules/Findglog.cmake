@@ -14,21 +14,16 @@ if (glog_SOURCE)
 
     set(glog_INCLUDE "${glog_DISTRIBUTION}/include")
 
-    if(MSVC)
-        find_library(GLOG_LIBRARY_RELEASE libglog_static
-                PATHS ${glog_DISTRIBUTION}
-                PATH_SUFFIXES Release)
+    if (MSVC)
 
-        find_library(GLOG_LIBRARY_DEBUG libglog_static
-                PATHS ${glog_DISTRIBUTION}
-                PATH_SUFFIXES Debug)
+        set(GLOG_LIBRARY_RELEASE ${glog_DISTRIBUTION}/Release/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
+
+        set(GLOG_LIBRARY_RELEASE ${glog_DISTRIBUTION}/Debug/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
 
         set(glog_LIBRARY optimized ${GLOG_LIBRARY_RELEASE} debug ${GLOG_LIBRARY_DEBUG})
-    else()
-        find_library(glog_LIBRARY glog
-                PATHS ${glog_DISTRIBUTION}
-                PATH_SUFFIXES lib lib64)
-    endif()
+    else ()
+        set(glog_LIBRARY ${glog_DISTRIBUTION}/lib64/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
+    endif ()
 
     message(STATUS "${Green}Found Glog include at: ${glog_SOURCE}${Reset}")
 else ()
