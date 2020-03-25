@@ -36,9 +36,9 @@ std::shared_ptr<restbed::Resource> Endpoint::buildResource() {
     auto resource = make_shared<Resource>();
     resource->set_path(path);
     if (logicGet != nullptr)
-        resource->set_method_handler("GET", bind1st(mem_fun(&Endpoint::handleGetImpl), this));
+        resource->set_method_handler("GET", bind1st(mem_fun(&Endpoint::handleGetImpl), new Endpoint(*this)));
     if (logicPost != nullptr)
-        resource->set_method_handler("POST", bind1st(mem_fun(&Endpoint::handleGetImpl), this));
+        resource->set_method_handler("POST", bind1st(mem_fun(&Endpoint::handleGetImpl), new Endpoint(*this)));
     return resource;
 }
 
