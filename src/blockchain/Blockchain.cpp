@@ -84,12 +84,12 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
     if (sectionNumber == newsSize) { // 缺少的段落
         while (sectionNumber < realSize) {
             wrongVec.emplace_back(sectionNumber + 1);
-            sectionNumber = sectionNumber+1;
+            sectionNumber = sectionNumber + 1;
         }
     } else {
         while (sectionNumber < newsSize) { // 增加的段落
             wrongVec.emplace_back(sectionNumber + 1);
-            sectionNumber = sectionNumber+1;
+            sectionNumber = sectionNumber + 1;
         }
     }
     return wrongVec;
