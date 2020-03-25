@@ -76,6 +76,8 @@ public:
 
     std::shared_ptr<restbed::Resource> buildResource();
 
+    void publish(restbed::Service& service);
+
     /**
      * 释放端点对象池
      */

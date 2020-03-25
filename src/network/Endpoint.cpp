@@ -121,3 +121,8 @@ void Endpoint::freePool() {
     for (auto ptr: POOL)
         delete ptr;
 }
+
+void Endpoint::publish(restbed::Service &service) {
+    auto resource = buildResource();
+    service.publish(resource);
+}
