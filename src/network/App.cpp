@@ -35,3 +35,8 @@ void App::registerController() {
             }).buildResource();
     service.publish(testResc);
 }
+
+void App::finalize() {
+    // 释放端点对象
+    Endpoint::freePool();
+}

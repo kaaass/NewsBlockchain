@@ -30,6 +30,11 @@ public:
      * 启动App
      */
     void start();
+
+    /**
+     * 结束App
+     */
+    void finalize();
 };
 
 

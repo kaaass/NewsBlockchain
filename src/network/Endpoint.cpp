@@ -6,6 +6,8 @@ using namespace std;
 using namespace restbed;
 using json = nlohmann::json;
 
+std::vector<Endpoint *> Endpoint::POOL;
+
 void Endpoint::setPath(std::string pPath) {
     path = std::move(pPath);
 }
@@ -35,10 +37,12 @@ Endpoint Endpoint::httpPost(std::string path, Endpoint::HandleLogic handleLogic)
 std::shared_ptr<restbed::Resource> Endpoint::buildResource() {
     auto resource = make_shared<Resource>();
     resource->set_path(path);
+    auto clone = new Endpoint(*this);
+    POOL.push_back(clone); // 加入Endpoint池
     if (logicGet != nullptr)
-        resource->set_method_handler("GET", bind1st(mem_fun(&Endpoint::handleGetImpl), new Endpoint(*this)));
+        resource->set_method_handler("GET", bind1st(mem_fun(&Endpoint::handleGetImpl), clone));
     if (logicPost != nullptr)
-        resource->set_method_handler("POST", bind1st(mem_fun(&Endpoint::handleGetImpl), new Endpoint(*this)));
+        resource->set_method_handler("POST", bind1st(mem_fun(&Endpoint::handleGetImpl), clone));
     return resource;
 }
 
@@ -80,4 +84,9 @@ void Endpoint::handlePostImpl(const std::shared_ptr<restbed::Session> session) {
     sessionResp.add_header("Content-Length", ::to_string(jsonStr.size()));
     sessionResp.add_header("Content-Type", "application/json");
     session->close(sessionResp);
+}
+
+void Endpoint::freePool() {
+    for (auto ptr: POOL)
+        delete ptr;
 }

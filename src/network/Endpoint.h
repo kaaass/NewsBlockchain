@@ -8,7 +8,17 @@
 #include <restbed>
 #include <json.hpp>
 
+/**
+ * RESTful 端点
+ */
 class Endpoint {
+
+    /**
+     * 端点对象池
+     *
+     * 用于保证端点函数在整个服务器生命周期存在
+     */
+    static std::vector<Endpoint *> POOL;
 
 public:
     struct JsonSession {
@@ -53,6 +63,11 @@ public:
     static Endpoint httpPost(std::string path, HandleLogic handleLogic);
 
     std::shared_ptr<restbed::Resource> buildResource();
+
+    /**
+     * 释放端点对象池
+     */
+    static void freePool();
 
 private:
 

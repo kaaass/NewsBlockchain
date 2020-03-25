@@ -13,6 +13,7 @@ int main(const int, const char **argv) {
     App app(8080);
     app.initialize();
     app.start();
+    app.finalize();
 
     return EXIT_SUCCESS;
 }
