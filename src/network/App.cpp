@@ -34,6 +34,17 @@ void App::registerController() {
                 response.data["para"] = para;
             }).buildResource();
     service.publish(testResc);
+    auto postResc =
+            Endpoint::httpPost("/post/", HANDLE_LOGIC(session, response) {
+                auto &body = session.body;
+                if (!body.contains("test")) {
+                    response.code = 400;
+                    response.message = "缺少参数test";
+                    return;
+                }
+                response.data["test"] = body["test"];
+            }).buildResource();
+    service.publish(postResc);
 }
 
 void App::finalize() {

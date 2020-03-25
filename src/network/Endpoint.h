@@ -31,7 +31,19 @@ public:
     };
 
     struct JsonResponse {
+        /**
+         * 返回码
+         */
         int code = restbed::OK;
+
+        /**
+         * 错误信息
+         */
+        std::string message;
+
+        /**
+         * 返回数据
+         */
         nlohmann::json data;
 
         JsonResponse() = default;
