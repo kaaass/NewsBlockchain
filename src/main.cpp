@@ -5,7 +5,7 @@
 #include <json.hpp>
 #include <chrono>
 #include <network/Endpoint.h>
-#include <iostream>
+#include <network/GlogLogger.h>
 
 using namespace std;
 using namespace restbed;
@@ -29,11 +29,13 @@ void get_method_handler(const shared_ptr<Session> session) {
     session->close(*resp);
 }
 
-void print(std::function<std::string()> const &f) {
-    std::cout << f() << std::endl;
-}
+int main(const int, const char **argv) {
+    // 日志配置
+    google::InitGoogleLogging(argv[0]);
+    google::InstallFailureSignalHandler();
+    FLAGS_alsologtostderr = true;
+    FLAGS_minloglevel = 0;
 
-int main(const int, const char **) {
     auto resource = make_shared<Resource>();
     resource->set_path("/resource/{name: .*}");
     resource->set_method_handler("GET", get_method_handler);
@@ -52,6 +54,7 @@ int main(const int, const char **) {
     Service service;
     service.publish(resource);
     service.publish(testResc);
+    service.set_logger(make_shared<GlogLogger>());
     service.start(settings);
 
     return EXIT_SUCCESS;

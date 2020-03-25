@@ -15,11 +15,16 @@ add_executable(news_blockchain src/main.cpp ${src_files})
 target_include_directories(news_blockchain PUBLIC src)
 
 # Dependencies to be builded before main executable
-add_dependencies(news_blockchain restbed)
+add_dependencies(news_blockchain restbed glog)
 
 # Link
-target_link_libraries(news_blockchain ${restbed_LIBRARY} json Threads::Threads)
-target_include_directories(news_blockchain PUBLIC ${restbed_INCLUDE})
+target_link_libraries(news_blockchain
+        ${restbed_LIBRARY} Threads::Threads
+        json
+        ${glog_LIBRARY} ${Unwind_LIBRARY})
+target_include_directories(news_blockchain PUBLIC
+        ${restbed_INCLUDE}
+        ${glog_INCLUDE})
 
 # Coverage
 add_coverage(news_blockchain)
@@ -28,9 +33,9 @@ add_coverage(news_blockchain)
 enable_testing()
 
 option(BUILD_TEST "Build the unit tests" ON)
-if(BUILD_TEST)
+if (BUILD_TEST)
     add_subdirectory(test)
-endif()
+endif ()
 
 # evaluate coverage
 coverage_evaluate()

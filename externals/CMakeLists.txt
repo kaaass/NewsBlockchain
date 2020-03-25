@@ -5,6 +5,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 find_package(restbed REQUIRED)
 find_package(json REQUIRED)
 find_package(Threads REQUIRED)
+find_package(Unwind REQUIRED)
+find_package(glog REQUIRED)
 
 # Setup Codecov
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/externals/CMake-codecov/cmake" ${CMAKE_MODULE_PATH})

@@ -7,3 +7,6 @@
 [submodule "externals/restbed"]
 	path = externals/restbed
 	url = https://github.com/Corvusoft/restbed.git
+[submodule "externals/glog"]
+	path = externals/glog
+	url = https://github.com/google/glog.git
