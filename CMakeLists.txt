@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 project(news_blockchain)
 
 # Setup externals
-add_subdirectory(externals)
+include(externals/CMakeLists.txt)
 
 # Find source code
 file(GLOB_RECURSE src_files "src/*.c" "src/*.cc" "src/*.cpp" "src/*.h" "src/*.hpp")
@@ -13,6 +13,15 @@ list(REMOVE_ITEM src_files "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 add_executable(news_blockchain src/main.cpp ${src_files})
 target_include_directories(news_blockchain PUBLIC src)
+
+# Dependencies to be builded before main executable
+add_dependencies(news_blockchain restbed)
+
+# Link
+target_link_libraries(news_blockchain ${restbed_LIBRARY} json Threads::Threads)
+target_include_directories(news_blockchain PUBLIC ${restbed_INCLUDE})
+
+# Coverage
 add_coverage(news_blockchain)
 
 # Unit Test
