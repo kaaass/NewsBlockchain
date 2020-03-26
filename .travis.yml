@@ -5,12 +5,13 @@ compiler:
   - gcc
   - clang
 
-#addons:
-#  apt:
-#    sources:
-#      - ubuntu-toolchain-r-test
-#      - llvm-toolchain-trusty-5.0
-#    packages:
+addons:
+  apt:
+    #    sources:
+    #      - ubuntu-toolchain-r-test
+    #      - llvm-toolchain-trusty-5.0
+    packages:
+      - libunwind
 #      - g++-6
 #      - clang-5.0
 
