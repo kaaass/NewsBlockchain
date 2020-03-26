@@ -8,6 +8,8 @@
  * Json序列化函数
  */
 
+void to_json(nlohmann::json &j, const ByteBuffer &buffer);
+
 void to_json(nlohmann::json &j, const ChainBlock::Header &header);
 
 void to_json(nlohmann::json &j, const ChainBlock &chainBlock);
@@ -18,6 +20,8 @@ void to_json(nlohmann::json &j, const ChainBlock &chainBlock);
 class Serializer {
 public:
     static std::string uInt32Hex(UInt32 uInt32);
+
+    static std::string bufferRawStr(const ByteBuffer& buffer);
 
     static void decompressedBlock(nlohmann::json &node, const ChainBlock &chainBlock);
 

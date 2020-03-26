@@ -46,7 +46,7 @@ public:
 /**
  * 搜索控制器
  *
- * /api/validate
+ * /api/search
  */
 class SearchController {
 public:

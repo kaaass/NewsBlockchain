@@ -59,8 +59,7 @@ void Serializer::decompressedBlock(nlohmann::json &j, const ChainBlock &chainBlo
                 .push_back({
                                    {"id",   id},
                                    {"size", blocks[id].size()},
-                                   {"data", std::string(blocks[id].data(),
-                                                        blocks[id].data() + blocks[id].size())}
+                                   {"data", Serializer::bufferRawStr(blocks[id])}
                            });
     }
 }
@@ -70,4 +69,8 @@ void Serializer::binaryBlock(nlohmann::json &j, const ChainBlock &chainBlock) {
     chainBlock.writeBuffer(buffer);
     j["header"] = chainBlock.getHeader();
     j["binary"] = buffer;
+}
+
+std::string Serializer::bufferRawStr(const ByteBuffer &buffer) {
+    return std::string(buffer.data(), buffer.data() + buffer.size());
 }

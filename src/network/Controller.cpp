@@ -5,6 +5,7 @@
 #include <network/Serializer.h>
 #include <blockchain/Blockchain.h>
 #include <hash/Hash.h>
+#include <huffman/Huffman.h>
 
 using namespace std;
 using namespace restbed;
@@ -103,11 +104,48 @@ void HashController::publish(restbed::Service &service) {
         auto data = body["data"].get<string>();
         auto result = Hash::run(data);
         response.data["hash"] = Serializer::uInt32Hex(result);
-    });
+    }).publish(service);
 }
 
 void HuffmanController::publish(restbed::Service &service) {
-    // TODO
+    /*
+     * 压缩数据
+     * POST /api/huffman/compress/
+     */
+    Endpoint::httpPost("/api/huffman/compress/", HANDLE_LOGIC(session, response) {
+        auto &body = session.body;
+        if (!body.contains("data")) {
+            response.code = 400;
+            response.message = "缺少参数data";
+            return;
+        }
+        auto data = body["data"].get<string>();
+        auto result = Huffman::compress({ByteBuffer::str(data)});
+        response.data["dictionary"] = Serializer::bufferRawStr(result.dictionary);
+        response.data["data"] = Serializer::bufferRawStr(result.data[0]);
+    }).publish(service);
+
+    /*
+     * 解压数据
+     * POST /api/huffman/decompress/
+     */
+    Endpoint::httpPost("/api/huffman/decompress/", HANDLE_LOGIC(session, response) {
+        auto &body = session.body;
+        if (!body.contains("dictionary")) {
+            response.code = 400;
+            response.message = "缺少参数dictionary";
+            return;
+        }
+        if (!body.contains("data")) {
+            response.code = 400;
+            response.message = "缺少参数data";
+            return;
+        }
+        auto data = ByteBuffer::str(body["data"].get<string>());
+        auto dictionary = ByteBuffer::str(body["dictionary"].get<string>());
+        auto result = Huffman::decompress(dictionary, data);
+        response.data["data"] = Serializer::bufferRawStr(result);
+    }).publish(service);
 }
 
 void ValidateController::publish(restbed::Service &service) {

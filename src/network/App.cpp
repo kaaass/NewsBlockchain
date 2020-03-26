@@ -31,6 +31,14 @@ void App::prepareSettings() {
 void App::registerController() {
     // 控制器：/api/block
     BlockController::publish(service);
+    // 控制器：/api/hash
+    HashController::publish(service);
+    // 控制器：/api/huffman
+    HuffmanController::publish(service);
+    // 控制器：/api/validate
+    ValidateController::publish(service);
+    // 控制器：/api/search
+    SearchController::publish(service);
 }
 
 void App::finalize() {
