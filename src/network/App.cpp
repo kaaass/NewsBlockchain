@@ -1,7 +1,9 @@
 #include "App.h"
+#include "Controller.h"
 #include <network/Endpoint.h>
 #include <network/GlogLogger.h>
-#include <string>
+#include <network/Serializer.h>
+#include <blockchain/Blockchain.h>
 
 using namespace std;
 using namespace restbed;
@@ -27,20 +29,8 @@ void App::prepareSettings() {
 }
 
 void App::registerController() {
-    Endpoint::httpGet("/test/{para: .*}", HANDLE_LOGIC(session, response) {
-        string para = session.request->get_path_parameter("para");
-        response.data["test"] = "233333";
-        response.data["para"] = para;
-    }).publish(service);
-    Endpoint::httpPost("/post/", HANDLE_LOGIC(session, response) {
-        auto &body = session.body;
-        if (!body.contains("test")) {
-            response.code = 400;
-            response.message = "缺少参数test";
-            return;
-        }
-        response.data["test"] = body["test"];
-    }).publish(service);
+    // 控制器：/api/block
+    BlockController::publish(service);
 }
 
 void App::finalize() {

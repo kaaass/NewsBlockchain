@@ -245,6 +245,8 @@ private:
      * 判断哈希树下标位置的结点是否是填充空白
      */
     static bool isHashTreePadding(DataBlockIndex size, HashTreeIndex ind);
+
+    friend class Serializer;
 };
 
 #define HTREE_LF(x) (2*(x)+1)

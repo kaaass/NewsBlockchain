@@ -54,13 +54,13 @@ public:
      */
     typedef std::function<void(const JsonSession &, JsonResponse &)> HandleLogic;
 
+    Endpoint() = default;
+
 private:
     std::string path;
 
     HandleLogic logicGet = nullptr;
     HandleLogic logicPost = nullptr;
-
-    Endpoint() = default;
 
 public:
 
@@ -76,7 +76,7 @@ public:
 
     std::shared_ptr<restbed::Resource> buildResource();
 
-    void publish(restbed::Service& service);
+    void publish(restbed::Service &service);
 
     /**
      * 释放端点对象池
