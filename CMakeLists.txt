@@ -15,7 +15,7 @@ add_executable(news_blockchain src/main.cpp ${src_files})
 target_include_directories(news_blockchain PUBLIC src)
 
 # Dependencies to be builded before main executable
-add_dependencies(news_blockchain restbed glog)
+add_dependencies(news_blockchain restbed)
 
 # Link
 target_link_libraries(news_blockchain

@@ -18,7 +18,7 @@ if (BUILD_TEST)
     add_test(NAME "RunUnitTest"
             COMMAND "./unit_test")
     # Link
-    add_dependencies(unit_test restbed glog)
+    add_dependencies(unit_test restbed)
     target_link_libraries(unit_test
             ${restbed_LIBRARY} Threads::Threads
             json

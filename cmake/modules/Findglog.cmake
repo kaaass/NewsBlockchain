@@ -5,34 +5,35 @@ if (glog_SOURCE)
     set(glog_BUILD "${CMAKE_CURRENT_BINARY_DIR}/glog_build")
     set(glog_DISTRIBUTION "${CMAKE_CURRENT_BINARY_DIR}/glog_distribution")
 
-    include(ExternalProject)
-    ExternalProject_Add(glog SOURCE_DIR ${glog_SOURCE}
-            PREFIX glog_build
-            INSTALL_DIR ${glog_DISTRIBUTION}
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${glog_DISTRIBUTION}
-            -DBUILD_SHARED=${BUILD_SHARED_LIBS} -DBUILD_TESTING=NO)
+    # Build glog
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} ${glog_BUILD})
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} ${glog_DISTRIBUTION})
+    execute_process(COMMAND ${CMAKE_COMMAND} ${glog_SOURCE}
+            -DCMAKE_INSTALL_PREFIX=${glog_DISTRIBUTION}
+            -DBUILD_SHARED=${BUILD_SHARED_LIBS}
+            -DBUILD_TESTING=NO
+            WORKING_DIRECTORY ${glog_BUILD}
+            )
+    execute_process(COMMAND ${CMAKE_COMMAND} --build . --target install
+            WORKING_DIRECTORY ${glog_BUILD}
+            )
 
     set(glog_INCLUDE "${glog_DISTRIBUTION}/include")
 
     if (MSVC)
+        find_library(GLOG_LIBRARY_RELEASE libglog_static
+                PATHS ${glog_DISTRIBUTION}
+                PATH_SUFFIXES Release)
 
-        set(GLOG_LIBRARY_RELEASE ${glog_DISTRIBUTION}/Release/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
-
-        set(GLOG_LIBRARY_RELEASE ${glog_DISTRIBUTION}/Debug/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
+        find_library(GLOG_LIBRARY_DEBUG libglog_static
+                PATHS ${glog_DISTRIBUTION}
+                PATH_SUFFIXES Debug)
 
         set(glog_LIBRARY optimized ${GLOG_LIBRARY_RELEASE} debug ${GLOG_LIBRARY_DEBUG})
     else ()
-        # Detect x64 or x32
-        set(bitness 32)
-        if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-            set(bitness 64)
-        endif ()
-        # Set path
-        if (bitness EQUAL 64)
-            set(glog_LIBRARY ${glog_DISTRIBUTION}/lib64/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
-        else ()
-            set(glog_LIBRARY ${glog_DISTRIBUTION}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
-        endif ()
+        find_library(glog_LIBRARY glog
+                PATHS ${glog_DISTRIBUTION}
+                PATH_SUFFIXES lib lib64)
     endif ()
 
     message(STATUS "${Green}Found Glog include at: ${glog_SOURCE}${Reset}")
