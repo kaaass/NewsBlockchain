@@ -73,10 +73,10 @@ bool Blockchain::check() {
     return true;
 }
 
-std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt blockId) {
+std::vector<UInt> Blockchain::validateNews(const std::string &data, UInt blockId) {
     std::vector<ByteBuffer> bodyData; // 数据项
-    std::vector<UInt32> wrongVec; // 数据项对应的hash
-    UInt32 sectionNumber = 0u; // 段落序号
+    std::vector<UInt> wrongVec; // 数据项对应的hash
+    UInt sectionNumber = 0u; // 段落序号
     auto paras = StringUtil::splitParagraph(data); // 分段
     const ChainBlock::DataBlockIndex newsSize = paras.size();
     const std::vector<UInt32> &hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
