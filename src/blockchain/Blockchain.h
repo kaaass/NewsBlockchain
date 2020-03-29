@@ -6,6 +6,9 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <util/StringUtil.h>
+#include <huffman/Huffman.h>
+#include <hash/Hash.h>
 
 #ifdef UNIT_TEST
 
@@ -51,6 +54,21 @@ public:
      */
     static std::vector<std::reference_wrapper<const ChainBlock>> getGlobalChain();
 
+    /**
+     *  检测区块头中包含的前一区块的哈希值 和 真实的前一区块的哈希值 是否相同
+     *  @param
+     *  @return
+     */
+    static bool check();
+
+    /**
+     * 判断给定新闻是否篡改过
+     * @param data
+     * @param blockId
+     * @return 获取篡改新闻所在自然段
+     */
+    static std::vector<UInt32> validateNews(const std::string &data, UInt blockId);
+
 #ifdef UNIT_TEST
 
     /**
@@ -62,6 +80,7 @@ public:
     static void clear();
 
     FRIEND_TEST(TestBlockchain, testCreate);
+    FRIEND_TEST(TestBlockchain, testCheck);
 
 #endif
 };

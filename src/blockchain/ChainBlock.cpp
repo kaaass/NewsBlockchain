@@ -195,3 +195,7 @@ bool ChainBlock::isHashTreePadding(ChainBlock::DataBlockIndex size, ChainBlock::
     }
     return ind >= offset + size;
 }
+
+UInt32 ChainBlock::getPrevBlockHash() const {
+    return blockHeader.prevBlockHash;
+}
