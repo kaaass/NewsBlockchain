@@ -57,6 +57,18 @@ bool Blockchain::check() {
         if (prevBlockHash != prevRealHash) {
             return false;
         }
+        if(blockID == GLOBAL_CHAIN.size()-1) { // 检测最后一个区块
+            const std::vector<ByteBuffer> & allDataBlock = iter->get().getAllDataBlock();//所有数据块
+            UInt32 sectionNumber = 0u; // 段落序号
+            for (auto &ref: allDataBlock) {
+                UInt32 checkHash = Hash::run(ref);
+                UInt32 realHash = iter->get().getDataBlockHashById(sectionNumber);
+                if(realHash != checkHash) {
+                    return false;
+                }
+                sectionNumber = sectionNumber + 1;
+            }
+        }
     }
     return true;
 }
