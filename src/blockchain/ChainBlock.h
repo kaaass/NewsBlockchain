@@ -5,7 +5,9 @@
 #include <util/ByteBuffer.h>
 
 #ifdef UNIT_TEST
+
 #include <gtest/gtest.h>
+
 #endif
 
 /**
@@ -216,11 +218,21 @@ public:
      */
     ByteBuffer &writeBuffer(ByteBuffer &buffer) const override;
 
+    /**
+     * 获取前一区块的哈希值
+     */
+    UInt32 getPrevBlockHash() const;
+
 #ifdef UNIT_TEST
+
     FRIEND_TEST(TestChainBlock, testConstruct);
+
     FRIEND_TEST(TestChainBlock, testHashTree1);
+
     FRIEND_TEST(TestChainBlock, testHashTree2);
+
     FRIEND_TEST(TestChainBlock, testHashTreeIndexCalc);
+
 #endif
 
 private:
