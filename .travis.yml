@@ -8,6 +8,7 @@ compiler:
 addons:
   apt:
     sources:
+      - debian-sid
       - ubuntu-toolchain-r-test
     #      - llvm-toolchain-trusty-5.0
     packages:
