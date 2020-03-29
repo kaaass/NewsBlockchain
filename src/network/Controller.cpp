@@ -149,7 +149,39 @@ void HuffmanController::publish(restbed::Service &service) {
 }
 
 void ValidateController::publish(restbed::Service &service) {
-    // TODO
+    /*
+     * 校验区块链是否被篡改
+     * GET /api/validate/
+     */
+    Endpoint::httpGet("/api/validate/", HANDLE_LOGIC(session, response) {
+        auto result = Blockchain::check();
+        response.data["result"] = result;
+    }).publish(service);
+
+    /*
+     * 校验某篇新闻是否被篡改
+     * POST /api/validate/decompress/
+     */
+    Endpoint::httpPost("/api/validate/block/{id: .*}/", HANDLE_LOGIC(session, response) {
+        string strId = session.request->get_path_parameter("id");
+        UInt id = ::stoi(strId);
+        auto &body = session.body;
+        if (!body.contains("data")) {
+            response.code = 400;
+            response.message = "缺少参数data";
+            return;
+        }
+        // 解析&校验参数
+        if (id < 0 || id >= Blockchain::size()) {
+            response.code = 404;
+            response.message = "请求的区块不存在！";
+            return;
+        }
+        auto data = body["data"].get<string>();
+        // 调用逻辑
+        auto result = Blockchain::validateNews(data, id);
+        response.data["wrong"] = result;
+    }).publish(service);
 }
 
 void SearchController::publish(restbed::Service &service) {
