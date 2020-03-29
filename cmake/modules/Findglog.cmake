@@ -22,7 +22,17 @@ if (glog_SOURCE)
 
         set(glog_LIBRARY optimized ${GLOG_LIBRARY_RELEASE} debug ${GLOG_LIBRARY_DEBUG})
     else ()
-        set(glog_LIBRARY ${glog_DISTRIBUTION}/lib64/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
+        # Detect x64 or x32
+        set(bitness 32)
+        if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+            set(bitness 64)
+        endif ()
+        # Set path
+        if (bitness EQUAL 64)
+            set(glog_LIBRARY ${glog_DISTRIBUTION}/lib64/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
+        else ()
+            set(glog_LIBRARY ${glog_DISTRIBUTION}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glog${CMAKE_STATIC_LIBRARY_SUFFIX})
+        endif ()
     endif ()
 
     message(STATUS "${Green}Found Glog include at: ${glog_SOURCE}${Reset}")
