@@ -4,20 +4,21 @@ Huffman::Result Huffman::compress(const std::vector<ByteBuffer> &data) {
 	ByteBuffer dictionary;//频数字典ByteBuffer
 	std::vector<ByteBuffer> compress_text;//压缩后的vector ByteBuffer
 	std::array<BitBuffer, size_t(256)> codemap;//压缩字典（即时生成，非持久化保存的字典）
+	BitBuffer longbuffer;//哨兵buffer
 
-	std::array<UInt32, size_t(256)> count = doFrequency(data);//统计频数
-	HuffmanTree huffman_tree(count);//根据频数建立Huffman树
-	toCodeMap(huffman_tree,codemap);//根据Huffman树建立压缩字典
+	std::array<UInt32, size_t(256)> count = doFrequency(data);//统计频数 OK
+	HuffmanTree huffman_tree(count);//根据频数建立Huffman树  OK
+	toCodeMap(huffman_tree,codemap,longbuffer);//根据Huffman树建立压缩字典 OK
 
-	compress_private(codemap, data, compress_text);//进行压缩
-	dictionary = toDictionaryByte(count);//频数转换为ByteBuffer作为频数字典
+	compress_private(codemap, data, compress_text, longbuffer);//进行压缩
+	dictionary = toDictionaryByte(count);//频数转换为ByteBuffer作为频数字典 OK
     return Huffman::Result({dictionary, compress_text});
 }
 
 ByteBuffer Huffman::decompress(const ByteBuffer &dict, const ByteBuffer &data) {
 	ByteBuffer decompress_text;
-	std::array<UInt32, size_t(256)> count = fromDictionaryByte(dict);//把字典转换为频数
-	HuffmanTree huffman_tree(count);//根据频数建立Huffman树
+	std::array<UInt32, size_t(256)> count = fromDictionaryByte(dict);//把字典转换为频数 OK
+	HuffmanTree huffman_tree(count);//根据频数建立Huffman树 OK
 	decompress_private(huffman_tree, data, decompress_text);//根据huffman树进行解压
     return decompress_text;
 }
@@ -111,22 +112,23 @@ ByteBuffer Huffman::toDictionaryByte(const std::array<UInt32, size_t(256)>& coun
 std::array<UInt32, size_t(256)> Huffman::fromDictionaryByte(const ByteBuffer& dictionary)
 {
 	std::array<UInt32, size_t(256)> count;
-	ByteBuffer tempBuffer;
+	//ByteBuffer tempBuffer;
 	//把ByteBuffer转换为count
 	for (size_t i = 0; i < 256; i++) {
 		//tempBuffer = dictionary.slice(ByteBuffer::Index(4 * i), ByteBuffer::Index(4 * i + 4));//从4 * i 到 4 * i + 4切割 4 个byte
-		count.at(i) = fromByteBuffer(tempBuffer,4 * i);//把这四个Byte转换为UInt32并赋值到count中
+		count.at(i) = fromByteBuffer(dictionary,4 * i);//把这四个Byte转换为UInt32并赋值到count中
 	}
 	return count;
 }
 
-UInt32 Huffman::fromByteBuffer(ByteBuffer & UInt32_buffer, size_t start)
+UInt32 Huffman::fromByteBuffer(const ByteBuffer & UInt32_buffer, size_t start)
 {
-	unsigned int ret = 0;//此处复制UInt32私有函数的代码
-	for (int i = start; i < start + 4; i++) {
-		ret |= static_cast<unsigned int>(UInt32_buffer[3 + start - i] << 8 * (i - start));
+	unsigned int ret = 0;
+	for (int i = 0; i < 4; i++) {
+		ret |= static_cast<unsigned int>(UInt32_buffer[3 - i + start] << 8 * i);
 	}
 	return ret;
+	//return UInt32();
 }
 
 
@@ -147,12 +149,24 @@ std::array<BitBuffer, size_t(256)> Huffman::toCodeMap(HuffmanTree huffman_tree)
 	return codemap;
 }*/
 
-void Huffman::toCodeMap(HuffmanTree huffman_tree, std::array<BitBuffer, size_t(256)>& codemap)
+void Huffman::toCodeMap(HuffmanTree huffman_tree, std::array<BitBuffer, size_t(256)>& codemap, BitBuffer& longbuffer)
 {
 	BitBuffer nowmap;
 	//BitBuffer tempbit;
 	//for (int i = 0; i<8; i++)tempbit.bits.push_back(0);// tempbit赋值为0x00000000
 	//codemap.fill(tempbit);
+	creatCodeMap(huffman_tree.root, codemap, nowmap);
+	for (size_t i = 0; i < 256; i++) {
+		if (codemap.at(i).bits.size() >= 8) {
+			longbuffer = codemap.at(i);//寻找大于等于8bit的huffman编码，作为哨兵项
+			break;
+		}
+	}
+}
+
+void Huffman::toCodeMap(HuffmanTree huffman_tree, std::array<BitBuffer, size_t(256)>& codemap)
+{
+	BitBuffer nowmap;
 	creatCodeMap(huffman_tree.root, codemap, nowmap);
 }
 
@@ -177,7 +191,10 @@ void Huffman::creatCodeMap(HuffmanTree::Node * node, std::array<BitBuffer, size_
 	nowmap.delBit();//回溯
 }
 
-void Huffman::compress_private(const std::array<BitBuffer, size_t(256)>& codemap, const std::vector<ByteBuffer>& ori_text, std::vector<ByteBuffer>& compress_text)
+void Huffman::compress_private(const std::array<BitBuffer, size_t(256)>& codemap, 
+								const std::vector<ByteBuffer>& ori_text, 
+								std::vector<ByteBuffer>& compress_text,
+								BitBuffer& longbuffer)
 {
 	//遍历每一个ByteBuffer的每一个Byte
 	for (std::vector<ByteBuffer>::const_iterator iter = ori_text.begin(); iter != ori_text.end(); iter++) {
@@ -190,8 +207,30 @@ void Huffman::compress_private(const std::array<BitBuffer, size_t(256)>& codemap
 			temp_bit = codemap.at(temp_count);//获取该byte对应的huffman编码
 			now_bitbuffer.pushBitBuffer(temp_bit);//将该huffman编码push进bitbuffer中
 		}
-		now_bytebuffer = now_bitbuffer.toByteBuffer();
+		now_bytebuffer = now_bitbuffer.toByteBuffer(longbuffer);
 		now_bitbuffer.clear();//清空
+		compress_text.push_back(now_bytebuffer);
+	}
+}
+
+void Huffman::compress_private_test(const std::array<BitBuffer, size_t(256)>& codemap, const std::vector<ByteBuffer>& ori_text, std::vector<ByteBuffer>& compress_text, BitBuffer & longbuffer)
+{
+	//遍历每一个ByteBuffer的每一个Byte
+	ByteBuffer now_bytebuffer;
+	BitBuffer now_bitbuffer;
+	size_t temp_count;
+	BitBuffer temp_bit;
+	for (std::vector<ByteBuffer>::const_iterator iter = ori_text.begin(); iter != ori_text.end(); iter++) {
+		for (size_t i = 0; i < iter->size(); i++) {
+			temp_count = size_t((unsigned char((*iter)[i])));//将Byte与0~255的下标进行对应
+			temp_bit = codemap.at(temp_count);//获取该byte对应的huffman编码
+			now_bitbuffer.pushBitBuffer(temp_bit);//将该huffman编码push进bitbuffer中
+		}
+		now_bytebuffer = now_bitbuffer.toByteBuffer(longbuffer);
+		std::cout << now_bytebuffer << std::endl;
+		system("pause");
+		now_bitbuffer.clear();//清空
+		//now_bitbuffer.clear();//清空
 		compress_text.push_back(now_bytebuffer);
 	}
 }
@@ -216,23 +255,36 @@ void Huffman::decompress_private(HuffmanTree huffman_tree, const ByteBuffer & or
 	}
 }
 
-ByteBuffer Huffman::BitBuffer::toByteBuffer()
+ByteBuffer Huffman::BitBuffer::toByteBuffer(Huffman::BitBuffer& longbuffer)
 {
 	ByteBuffer buffer;
-	Byte byte;
+	std::array<unsigned char,8> byte;
 	int index = 0;
+	unsigned char byte_num = 0;
 	for (std::vector<Bit>::const_iterator iter = this->bits.begin(); iter != this->bits.end(); iter++) {
 		if (index == 8) {
-			buffer.push_back(byte);//每8个插入一次
+			byte_num = 128 * byte.at(7) + 64 * byte.at(6) + 32 * byte.at(5) + 16 * byte.at(4) + 8 * byte.at(3) +
+				4 * byte.at(2) + 2 * byte.at(1) + 1 * byte.at(0);
+			buffer.push_back(byte_num);//每8个插入一次
 			index = 0;
 		}
-		byte[index++] = *iter;
+		//原：byte[index++] = *iter;
+		if (iter->b == 0) {
+			byte.at(7 - index) = 0;
+		}
+		else {
+			byte.at(7 - index) = 1;
+		}
+		index++;
 	}
 	if (index != 8) {
-		for (int i = index; i < 8; i++) {
-			byte[i] = 0;//不满8个，剩余部分置为0
+		//原：for (int i = index; i < 8; i++) {
+		for (int i = 0; i < 8 - index; i++) {
+			byte.at(7-index-i) = longbuffer.bits.at(i);//不满8个，剩余部分置为longbuffer的一部分
 		}
-		buffer.push_back(byte);
+		byte_num = 128 * byte.at(7) + 64 * byte.at(6) + 32 * byte.at(5) + 16 * byte.at(4) + 8 * byte.at(3) +
+			4 * byte.at(2) + 2 * byte.at(1) + 1 * byte.at(0);
+		buffer.push_back(byte_num);//每8个插入一次
 	}
 	return buffer;
 }
@@ -267,7 +319,8 @@ Huffman::BitBuffer::BitBuffer(ByteBuffer buffer)
 {
 	for (size_t i = 0; i < buffer.size(); i++) {
 		for (size_t j = 0; j < 8; j++) {
-			addBit(buffer[i][j]);
+			//原：addBit(buffer[i][j]);
+			addBit(buffer[i][7-j]);
 		}
 	}
 }
