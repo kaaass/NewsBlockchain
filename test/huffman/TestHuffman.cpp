@@ -33,7 +33,6 @@ unrecoverable even when using advanced recovery tools.";
     ASSERT_EQ((UInt) str.compare(str2), (UInt) 0);
     // 多次压缩结果应该一致
     buffer = ByteBuffer::str(str);
-    buffer_vector.push_back(buffer);
     auto result2 = Huffman::compress(buffer_vector);
     ASSERT_EQ(result.dictionary, result2.dictionary);
     ASSERT_EQ(result.data, result2.data);
