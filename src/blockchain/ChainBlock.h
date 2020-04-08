@@ -223,6 +223,11 @@ public:
      */
     UInt32 getPrevBlockHash() const;
 
+    /**
+     *haskeyword 看起来很nb的样子
+     */
+    bool hasKeyword(const std::vector<std::string> &keywords);
+
 #ifdef UNIT_TEST
 
     FRIEND_TEST(TestChainBlock, testConstruct);

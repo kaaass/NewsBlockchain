@@ -199,3 +199,8 @@ bool ChainBlock::isHashTreePadding(ChainBlock::DataBlockIndex size, ChainBlock::
 UInt32 ChainBlock::getPrevBlockHash() const {
     return blockHeader.prevBlockHash;
 }
+
+bool ChainBlock::hasKeyword(const std::vector<std::string> &keywords) {
+    // TODO 完成布隆过滤
+    return true;
+}
