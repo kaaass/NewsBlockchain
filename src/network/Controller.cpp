@@ -6,6 +6,7 @@
 #include <blockchain/Blockchain.h>
 #include <hash/Hash.h>
 #include <huffman/Huffman.h>
+#include <search/Search.h>
 
 using namespace std;
 using namespace restbed;
@@ -185,5 +186,23 @@ void ValidateController::publish(restbed::Service &service) {
 }
 
 void SearchController::publish(restbed::Service &service) {
-    // TODO
+
+    /*
+     * 关键词搜索
+     * GET /api/search/
+     */
+    Endpoint::httpGet("/api/search/", HANDLE_LOGIC(session, response) {
+        auto keyword = session.request->get_query_parameter("keyword", "");
+        if (keyword.empty()) {
+            response.code = 400;
+            response.message = "参数keyword不可为空";
+            return;
+        }
+        auto keywords = StringUtil::split(keyword, ",");
+        auto result = Search::search(keywords);
+        // 返回
+        response.data = json::array();
+        for (auto &blockId : result)
+            response.data.push_back(Blockchain::get(blockId).getHeader());
+    }).publish(service);
 }
