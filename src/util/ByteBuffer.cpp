@@ -2,16 +2,16 @@
 #include <string>
 #include "ByteBuffer.h"
 
-ByteBuffer::ByteBuffer(void *data, size_t size) {
+ByteBuffer::ByteBuffer(void *data, size_t size) {//将数据的data开始 size大小赋值给bytes vector
     bytes.assign((UChar *) data, (UChar *) data + size);
 }
 
-ByteBuffer::ByteBuffer(const std::vector<Byte> &buffer) {
+ByteBuffer::ByteBuffer(const std::vector<Byte> &buffer) {//直接给你个vector，直接赋值
     bytes = buffer;
 }
 
 ByteBuffer ByteBuffer::str(const std::string &str) {
-    return ByteBuffer((void *) str.data(), str.size());
+    return ByteBuffer((void *) str.data(), str.size());//data（）求得下标，size为大小
 }
 
 size_t ByteBuffer::size() const {
@@ -97,7 +97,7 @@ ByteBuffer ByteBuffer::slice(ByteBuffer::Index start, ByteBuffer::Index end) {
     return ByteBuffer(std::vector<Byte>(bytes.begin() + start, bytes.begin() + end));
 }
 
-ByteBuffer &ByteBuffer::operator=(const std::vector<Byte> &buffer) {
+ByteBuffer &ByteBuffer::operator=(const std::vector<Byte> &buffer) {//赋值
     bytes = buffer;
     return *this;
 }
