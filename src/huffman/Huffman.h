@@ -37,7 +37,7 @@ public:
     * @return 压缩结果对象
     */
     static Result compress(const std::vector<ByteBuffer> &data);
-
+	static std::vector<ByteBuffer> compress(const ByteBuffer &dict, const std::vector<ByteBuffer> &data);
     /**
     * 对一个数据块进行解压
     *

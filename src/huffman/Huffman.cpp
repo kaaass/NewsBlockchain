@@ -15,6 +15,18 @@ Huffman::Result Huffman::compress(const std::vector<ByteBuffer> &data) {
     return Huffman::Result({dictionary, compress_text});
 }
 
+std::vector<ByteBuffer> Huffman::compress(const ByteBuffer & dict, const std::vector<ByteBuffer>& data)
+{
+	std::vector<ByteBuffer> compress_text;
+	std::array<BitBuffer, size_t(256)> codemap;//压缩字典（即时生成，非持久化保存的字典）
+	BitBuffer longbuffer;//哨兵buffer
+	std::array<UInt32, size_t(256)> count = fromDictionaryByte(dict);//把字典转换为频数
+	HuffmanTree huffman_tree(count);//根据频数建立Huffman树
+	toCodeMap(huffman_tree, codemap, longbuffer);//根据Huffman树建立压缩字典
+	compress_private(codemap, data, compress_text, longbuffer);//进行压缩
+	return compress_text;
+}
+
 ByteBuffer Huffman::decompress(const ByteBuffer &dict, const ByteBuffer &data) {
     ByteBuffer decompress_text;
     std::array<UInt32, size_t(256)> count = fromDictionaryByte(dict);//把字典转换为频数 OK
@@ -210,28 +222,6 @@ void Huffman::compress_private(const std::array<BitBuffer, size_t(256)> &codemap
     }
 }
 
-void Huffman::compress_private_test(const std::array<BitBuffer, size_t(256)> &codemap,
-                                    const std::vector<ByteBuffer> &ori_text, std::vector<ByteBuffer> &compress_text,
-                                    BitBuffer &longbuffer) {
-    //遍历每一个ByteBuffer的每一个Byte
-    ByteBuffer now_bytebuffer;
-    BitBuffer now_bitbuffer;
-    size_t temp_count;
-    BitBuffer temp_bit;
-    for (std::vector<ByteBuffer>::const_iterator iter = ori_text.begin(); iter != ori_text.end(); iter++) {
-        for (size_t i = 0; i < iter->size(); i++) {
-            temp_count = size_t((unsigned char) (*iter)[i]);//将Byte与0~255的下标进行对应
-            temp_bit = codemap.at(temp_count);//获取该byte对应的huffman编码
-            now_bitbuffer.pushBitBuffer(temp_bit);//将该huffman编码push进bitbuffer中
-        }
-        now_bytebuffer = now_bitbuffer.toByteBuffer(longbuffer);
-        std::cout << now_bytebuffer << std::endl;
-        system("pause");
-        now_bitbuffer.clear();//清空
-        //now_bitbuffer.clear();//清空
-        compress_text.push_back(now_bytebuffer);
-    }
-}
 
 void Huffman::decompress_private(HuffmanTree huffman_tree, const ByteBuffer &ori_text, ByteBuffer &decompress_text) {
     BitBuffer bitbuffer = BitBuffer(ori_text);//把ByteBuffer转换为BitBuffer，便于遍历

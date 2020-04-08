@@ -19,6 +19,7 @@ or at Windows stat-up/ shutdown.To ensure maximum privacy protection \
 Anti Tracks implements the US Department of Defense DOD 5220.22-M, \
 Gutmann and NSA secure erasing methods, making any erased files \
 unrecoverable even when using advanced recovery tools.";
+	//std::string str = "Anti Tracks is a complete solution";
     buffer = ByteBuffer::str(str);
     buffer_vector.push_back(buffer);
     auto result = Huffman::compress(buffer_vector);
@@ -33,10 +34,12 @@ unrecoverable even when using advanced recovery tools.";
     ASSERT_EQ((UInt) str.compare(str2), (UInt) 0);
     // 多次压缩结果应该一致
     buffer = ByteBuffer::str(str);
-    buffer_vector.push_back(buffer);
     auto result2 = Huffman::compress(buffer_vector);
     ASSERT_EQ(result.dictionary, result2.dictionary);
     ASSERT_EQ(result.data, result2.data);
+	// 根据已有字典解压后的结果应该一致
+	auto buffer_vector2 = Huffman::compress(result.dictionary,buffer_vector);
+	ASSERT_EQ(result.data, buffer_vector2);
 }
 
 // 自行发挥
