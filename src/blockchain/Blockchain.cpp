@@ -82,8 +82,7 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
     const std::vector<UInt32> &hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
     const ChainBlock::DataBlockIndex realSize = get(blockId).size() - 1; // 除去字典
     const std::vector<UInt32> hashVec(hashTree.cend() - realSize, hashTree.cend()); // blockId对应的数据项的hash
-    auto compResult = Huffman::compress(paras); // 压缩
-    auto &compData = compResult.data;
+    auto compData = Huffman::compress(get(blockId)[0], paras); // 压缩
     bodyData.insert(bodyData.end(), compData.begin(), compData.end());
 
     for (sectionNumber = 0;
