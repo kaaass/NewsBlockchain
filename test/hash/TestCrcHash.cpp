@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <hash/CrcHash.h>
+#include <hash/Hash.h>
 
 TEST(TestCrcHash, testRun) {
     ByteBuffer buffer({ 'I', 'L', 'O', 'V', 'J', 'L', 'U' });
@@ -19,4 +20,6 @@ TEST(TestCrcHash, testRun) {
     ASSERT_NE((UInt)Hash::run("ILovJLU"), (UInt)Hash::run(str));
     ASSERT_NE((UInt)Hash::run("ILOVjlu"), (UInt)Hash::run(str));
     ASSERT_NE((UInt)Hash::run("I LOVJLU"), (UInt)Hash::run(str));
+
+
 }
