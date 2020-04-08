@@ -19,7 +19,7 @@ or at Windows stat-up/ shutdown.To ensure maximum privacy protection \
 Anti Tracks implements the US Department of Defense DOD 5220.22-M, \
 Gutmann and NSA secure erasing methods, making any erased files \
 unrecoverable even when using advanced recovery tools.";
-	//std::string str = "Anti Tracks is a complete solution";
+    //std::string str = "Anti Tracks is a complete solution";
     buffer = ByteBuffer::str(str);
     buffer_vector.push_back(buffer);
     auto result = Huffman::compress(buffer_vector);
@@ -37,9 +37,36 @@ unrecoverable even when using advanced recovery tools.";
     auto result2 = Huffman::compress(buffer_vector);
     ASSERT_EQ(result.dictionary, result2.dictionary);
     ASSERT_EQ(result.data, result2.data);
-	// 根据已有字典解压后的结果应该一致
-	auto buffer_vector2 = Huffman::compress(result.dictionary,buffer_vector);
-	ASSERT_EQ(result.data, buffer_vector2);
+    // 根据已有字典解压后的结果应该一致
+    auto buffer_vector2 = Huffman::compress(result.dictionary, buffer_vector);
+    ASSERT_EQ(result.data, buffer_vector2);
 }
 
-// 自行发挥
+TEST(TestHuffman, testCompress) {
+    std::vector<ByteBuffer> vec;
+    Huffman::Result result;
+    std::vector<ByteBuffer> decomp;
+    //
+    vec = {
+            ByteBuffer::str("what")
+    };
+    result = Huffman::compress(vec);
+    decomp.clear();
+    for (auto &sec: result.data)
+        decomp.push_back(Huffman::decompress(result.dictionary, sec));
+    ASSERT_EQ(vec, decomp);
+    //
+    vec = {
+            ByteBuffer::str("hello~"),
+            ByteBuffer::str("233333"),
+            ByteBuffer::str("5566666"),
+            ByteBuffer::str("what"),
+            ByteBuffer::str("how"),
+            ByteBuffer::str("why")
+    };
+    result = Huffman::compress(vec);
+    decomp.clear();
+    for (auto &sec: result.data)
+        decomp.push_back(Huffman::decompress(result.dictionary, sec));
+    ASSERT_EQ(vec, decomp);
+}

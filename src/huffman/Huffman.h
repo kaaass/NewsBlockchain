@@ -126,11 +126,6 @@ private:
                                  std::vector<ByteBuffer> &compress_text,
                                  BitBuffer &longbuffer);
 
-    static void compress_private_test(const std::array<BitBuffer, size_t(256)> &codemap,
-                                      const std::vector<ByteBuffer> &ori_text,
-                                      std::vector<ByteBuffer> &compress_text,
-                                      BitBuffer &longbuffer);
-
     //根据huffman树、原文，创建解压后的文本
     static void decompress_private(HuffmanTree huffman_tree, const ByteBuffer &ori_text, ByteBuffer &decompress_text);
 };
