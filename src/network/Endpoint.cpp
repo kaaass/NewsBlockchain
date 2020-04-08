@@ -59,8 +59,7 @@ void Endpoint::handleGetImpl(std::shared_ptr<restbed::Session> origin) {
         result["status"] = response.code == OK ? "OK" : "ERR";
         if (!response.message.empty())
             result["message"] = response.message;
-        if (!response.data.empty())
-            result["data"] = response.data;
+        result["data"] = response.data;
     } catch (const exception &e) {
         result["status"] = "ERR";
         response.code = INTERNAL_SERVER_ERROR;
@@ -94,8 +93,7 @@ void Endpoint::handlePostImpl(const std::shared_ptr<restbed::Session> origin) {
             result["status"] = response.code == OK ? "OK" : "ERR";
             if (!response.message.empty())
                 result["message"] = response.message;
-            if (!response.data.empty())
-                result["data"] = response.data;
+            result["data"] = response.data;
         } catch (const json::exception &e) {
             result["status"] = "ERR";
             response.code = BAD_REQUEST;
