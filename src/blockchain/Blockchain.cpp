@@ -77,14 +77,10 @@ bool Blockchain::check() {
 std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt blockId) {
     std::vector<ByteBuffer> bodyData; // 数据项
     std::vector<UInt32> wrongVec; // 数据项对应的hash
-//    UInt32 sectionNumber = 0u; // 段落序号
     auto paras = StringUtil::splitParagraph(data); // 分段
-//    const ChainBlock::DataBlockIndex newsSize = paras.size();
-//    const ChainBlock::DataBlockIndex fromLen = paras.size();
     const UInt32 fromLen = paras.size();
     const std::vector<UInt32> &hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
     const ChainBlock::DataBlockIndex realSize = get(blockId).size() - 1; // 除去字典
-//    const ChainBlock::DataBlockIndex toLen = get(blockId).size() - 1; // 除去字典
     const UInt32 toLen = get(blockId).size() - 1; // 除去字典
     std::vector<UInt32> distance((fromLen + 1) * (toLen + 1));
     std::vector<EditOperation> operations((fromLen + 1) * (toLen + 1));
@@ -156,26 +152,6 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
     reverse(result.begin(), result.end());
 
     return result;
-
-//    for (sectionNumber = 0;
-//         sectionNumber < realSize && sectionNumber < newsSize; sectionNumber = sectionNumber + 1) { // 修改的段落
-//        UInt32 bufferHash = Hash::run(bodyData[sectionNumber]);
-//        if (bufferHash != hashVec[sectionNumber]) {
-//            wrongVec.emplace_back(sectionNumber + 1); // 自然段从1开始
-//        }
-//    }
-//    if (sectionNumber == newsSize) { // 缺少的段落
-//        while (sectionNumber < realSize) {
-//            wrongVec.emplace_back(sectionNumber + 1);
-//            sectionNumber = sectionNumber + 1;
-//        }
-//    } else {
-//        while (sectionNumber < newsSize) { // 增加的段落
-//            wrongVec.emplace_back(sectionNumber + 1);
-//            sectionNumber = sectionNumber + 1;
-//        }
-//    }
-//    return wrongVec;
 }
 
 
