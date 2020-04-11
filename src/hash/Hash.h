@@ -6,7 +6,7 @@
 
 class SimpleHash;
 class CrcHash;
-class Sha256standard;
+class Sha256;
 /**
  * 哈希函数管理类
  * 若要计算哈希，可以使用Hash::run函数

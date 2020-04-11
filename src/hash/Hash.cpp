@@ -2,12 +2,13 @@
 #include "CrcHash.h"
 #include <cstdlib>
 #include "Sha256standard.h"
+#include "Sha256.h"
 
 IHashFunc *Hash::DEFAULT_HASH = nullptr;
 
 IHashFunc *Hash::getDefaultHash() {
     // TODO 修改成靠谱的哈希函数
-    return new Sha256standard;
+    return new Sha256;
 }
 
 UInt32 Hash::run(const ByteBuffer &buffer) {
