@@ -12,16 +12,6 @@
 class BloomFilter {
 
     /**
-     * 布隆过滤器容量
-     */
-    size_t capacity;
-
-    /**
-     * 分类错误率
-     */
-    float falsePositive;
-
-    /**
      * 用于产生哈希函数的种子
      */
     std::vector<ULong> hashSeeds;
@@ -34,11 +24,13 @@ class BloomFilter {
     /**
      * 比特数
      */
-    size_t size;
+    size_t size = 0;
+
+    BloomFilter() = default;
 
 public:
 
-    BloomFilter(size_t capacity, float falsePositive = 0.02);
+    explicit BloomFilter(size_t capacity, float falsePositive = 0.02);
 
     /**
      * 向布隆过滤器插入内容
@@ -52,6 +44,19 @@ public:
      * @return
      */
     bool contain(const ByteBuffer& data);
+
+    /**
+     * 把数据写入 buffer
+     * @param buffer
+     */
+    void writeToBuffer(ByteBuffer& buffer);
+
+    /**
+     * 从 buffer 读取
+     * @param buffer
+     * @return
+     */
+    static BloomFilter * readFromBuffer(const ByteBuffer& buffer);
 
 private:
 
