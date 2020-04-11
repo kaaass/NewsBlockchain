@@ -1,13 +1,11 @@
 #include "Hash.h"
 #include "CrcHash.h"
 #include <cstdlib>
-#include "Sha256standard.h"
 #include "Sha256.h"
 
 IHashFunc *Hash::DEFAULT_HASH = nullptr;
 
 IHashFunc *Hash::getDefaultHash() {
-    // TODO 修改成靠谱的哈希函数
     return new Sha256;
 }
 

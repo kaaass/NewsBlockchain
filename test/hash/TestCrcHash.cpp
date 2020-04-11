@@ -7,19 +7,17 @@ TEST(TestCrcHash, testRun) {
     ByteBuffer buffer({ 'I', 'L', 'O', 'V', 'J', 'L', 'U' });
     std::string str = "ILOVJLU";
 
-    // Á½¸örunµÄ½á¹ûÓ¦ÏàÍ¬
+    // ä¸¤ä¸ªrunçš„ç»“æœåº”ç›¸åŒ
     ASSERT_EQ((UInt)Hash::run(buffer), (UInt)Hash::run(str));
 
-    // ¶à´Î¼ÆËãµÄ½á¹ûÓ¦¸ÃÏàÍ¬
+    // å¤šæ¬¡è®¡ç®—çš„ç»“æœåº”è¯¥ç›¸åŒ
     ASSERT_EQ((UInt)Hash::run(buffer), (UInt)Hash::run(buffer));
 
-    // ¹şÏ£ÖµÓ¦¸ÃºÍÕûÌåÏà¹Ø
+    // å“ˆå¸Œå€¼åº”è¯¥å’Œæ•´ä½“ç›¸å…³
     ASSERT_NE((UInt)Hash::run("ILOVJLU!"), (UInt)Hash::run(str));
 
-    // ¼òµ¥±ä»¯ºóµÄ½á¹ûÓ¦¸Ã²»Í¬
+    // ç®€å•å˜åŒ–åçš„ç»“æœåº”è¯¥ä¸åŒ
     ASSERT_NE((UInt)Hash::run("ILovJLU"), (UInt)Hash::run(str));
     ASSERT_NE((UInt)Hash::run("ILOVjlu"), (UInt)Hash::run(str));
     ASSERT_NE((UInt)Hash::run("I LOVJLU"), (UInt)Hash::run(str));
-
-
 }

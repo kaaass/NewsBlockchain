@@ -9,97 +9,94 @@
 
 using namespace std;
 
-class Sha256 : public IHashFunc
-{
+class Sha256 : public IHashFunc {
 public:
 
-    Sha256() {}
-    ~Sha256() {}
+    Sha256() = default;
 
-    /*
-    *Ä¬ÈÏhashº¯Êı
-    *
-    */
-    UInt32 run(const ByteBuffer& buffer) override;
+    ~Sha256() = default;
 
-    //hashËã·¨Èë¿Úº¯Êı
-    string toHexCode(const string& message);
-    //hashËã·¨
-    int deal(const vector<uint8_t>& message,
-        vector<uint8_t>* _digest);
+    /**
+     * å®ç° hash å‡½æ•°
+     */
+    UInt32 run(const ByteBuffer &buffer) override;
+
+    // hash ç®—æ³•å…¥å£å‡½æ•°
+    vector<uint8_t> toHexCode(const ByteBuffer &buffer);
+
+    // hash ç®—æ³•
+    int deal(const vector<uint8_t> &message,
+             vector<uint8_t> *_digest);
 
 protected:
 
-    //hash¼ÓÃÜµÄ²»Í¬×Óº¯ÊıÉè¼Æ
+    //hashåŠ å¯†çš„ä¸åŒå­å‡½æ•°è®¾è®¡
 
-    //Êı¾İÔ¤´¦Àíº¯Êı
-    int datapreprocess(vector<uint8_t>* message) const;
+    //æ•°æ®é¢„å¤„ç†å‡½æ•°
+    int datapreprocess(vector<uint8_t> *message) const;
 
-    //·Ö½âĞÅÏ¢Îª512bitµÄÊı¾İ¿é
-    int devide64(const vector<uint8_t>& message,
-        vector<vector<uint8_t>>* heap64) const;
+    //åˆ†è§£ä¿¡æ¯ä¸º512bitçš„æ•°æ®å—
+    int devide64(const vector<uint8_t> &message,
+                 vector<vector<uint8_t>> *heap64) const;
 
-    //¸ù¾İsha256Ëã·¨Éè¼Æ£¬¸ù¾İº¯Êı¹«Ê½£¬½«16*32µÄ512bitÀ©Õ¹Îª64*32
-    //À©Õ¹µÚ17µ½64µÄ32Î»Êı
-    int expand48(const vector<uint8_t>& heap64,
-        vector<uint32_t>* result) const;
+    //æ ¹æ®sha256ç®—æ³•è®¾è®¡ï¼Œæ ¹æ®å‡½æ•°å…¬å¼ï¼Œå°†16*32çš„512bitæ‰©å±•ä¸º64*32
+    //æ‰©å±•ç¬¬17åˆ°64çš„32ä½æ•°
+    int expand48(const vector<uint8_t> &heap64,
+                 vector<uint32_t> *result) const;
 
-    //64²ãÑ­»·¼ÓÃÜ
-    int hashtocode64(const vector<uint32_t>& result,
-        vector<uint32_t>* code64) const;
+    //64å±‚å¾ªç¯åŠ å¯†
+    int hashtocode64(const vector<uint32_t> &result,
+                     vector<uint32_t> *code64) const;
 
-    int finalhashvalue(const vector<uint32_t>& input,
-        vector<uint8_t>* output) const;
+    int finalhashvalue(const vector<uint32_t> &input,
+                       vector<uint8_t> *output) const;
 
-    //SHA256Ëã·¨ĞèÒªµÄ6ÖÖÂß¼­ÔËËãº¯Êı
+    //SHA256ç®—æ³•éœ€è¦çš„6ç§é€»è¾‘è¿ç®—å‡½æ•°
     inline uint32_t ch(uint32_t x, uint32_t y, uint32_t z) const;
+
     inline uint32_t maj(uint32_t x, uint32_t y, uint32_t z) const;
+
     inline uint32_t big_sigma0(uint32_t x) const;
+
     inline uint32_t big_sigma1(uint32_t x) const;
+
     inline uint32_t small_sigma0(uint32_t x) const;
+
     inline uint32_t small_sigma1(uint32_t x) const;
 
 private:
 
-    //±ØÒªµÄsha256Ëã·¨³£Á¿
+    //å¿…è¦çš„sha256ç®—æ³•å¸¸é‡
     static vector<uint32_t> ori_mes_digest;
     static vector<uint32_t> constvalue;
 
-    int s16toi(char c);
 };
 
-//6ÖÖÂß¼­ÔËËãº¯Êı¶¨Òå
+//6ç§é€»è¾‘è¿ç®—å‡½æ•°å®šä¹‰
 
-inline uint32_t Sha256::ch(uint32_t x, uint32_t y, uint32_t z) const
-{
+inline uint32_t Sha256::ch(uint32_t x, uint32_t y, uint32_t z) const {
     return (x & y) ^ ((~x) & z);
 }
 
-inline uint32_t Sha256::maj(uint32_t x, uint32_t y, uint32_t z) const
-{
+inline uint32_t Sha256::maj(uint32_t x, uint32_t y, uint32_t z) const {
     return (x & y) ^ (x & z) ^ (y & z);
 }
 
-inline uint32_t Sha256::big_sigma0(uint32_t x) const
-{
+inline uint32_t Sha256::big_sigma0(uint32_t x) const {
     return (x >> 2 | x << 30) ^ (x >> 13 | x << 19) ^ (x >> 22 | x << 10);
 }
 
-inline uint32_t Sha256::big_sigma1(uint32_t x) const
-{
+inline uint32_t Sha256::big_sigma1(uint32_t x) const {
     return (x >> 6 | x << 26) ^ (x >> 11 | x << 21) ^ (x >> 25 | x << 7);
 }
 
-inline uint32_t Sha256::small_sigma0(uint32_t x) const
-{
+inline uint32_t Sha256::small_sigma0(uint32_t x) const {
     return (x >> 7 | x << 25) ^ (x >> 18 | x << 14) ^ (x >> 3);
 }
 
-inline uint32_t Sha256::small_sigma1(uint32_t x) const
-{
+inline uint32_t Sha256::small_sigma1(uint32_t x) const {
     return (x >> 17 | x << 15) ^ (x >> 19 | x << 13) ^ (x >> 10);
 }
-
 
 
 #endif // SHA256_H
