@@ -129,3 +129,7 @@ ByteBuffer &ByteBuffer::clear() {
     bytes.clear();
     return *this;
 }
+
+void ByteBuffer::allocate(size_t n) {
+    bytes.assign(n, 0);
+}

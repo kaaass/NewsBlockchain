@@ -147,6 +147,12 @@ public:
     ByteBuffer &write(ULong uLong);
 
     /**
+     * 预分配缓冲区空间
+     * @param size
+     */
+    void allocate(size_t size);
+
+    /**
      * 清空缓冲区
      * @return
      */
