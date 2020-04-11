@@ -222,7 +222,6 @@ void Huffman::compress_private(const std::array<BitBuffer, size_t(256)> &codemap
     }
 }
 
-
 void Huffman::decompress_private(HuffmanTree huffman_tree, const ByteBuffer &ori_text, ByteBuffer &decompress_text) {
     BitBuffer bitbuffer = BitBuffer(ori_text);//把ByteBuffer转换为BitBuffer，便于遍历
     HuffmanTree::Node *p = huffman_tree.root;//用于搜索huffman树的指针
@@ -270,6 +269,12 @@ ByteBuffer Huffman::BitBuffer::toByteBuffer(Huffman::BitBuffer &longbuffer) {
                    4 * byte.at(2) + 2 * byte.at(1) + 1 * byte.at(0);
         buffer.push_back(byte_num);//每8个插入一次
     }
+	else
+	{
+		byte_num = 128 * byte.at(7) + 64 * byte.at(6) + 32 * byte.at(5) + 16 * byte.at(4) + 8 * byte.at(3) +
+			4 * byte.at(2) + 2 * byte.at(1) + 1 * byte.at(0);
+		buffer.push_back(byte_num);//每8个插入一次
+	}
     return buffer;
 }
 
