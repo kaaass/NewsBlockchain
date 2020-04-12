@@ -11,7 +11,7 @@ BloomFilter::BloomFilter(size_t capacity, float falsePositive) {
 
     // 计算布隆过滤器的长度
     // 公式推导见：https://en.wikipedia.org/wiki/Bloom_filter#Optimal_number_of_hash_functions
-    size = std::ceil(- (double) capacity * std::log(falsePositive) / (std::log(2) * std::log(2)));
+    size = std::ceil(-(double) capacity * std::log(falsePositive) / (std::log(2) * std::log(2)));
     bitBuffer.allocate((size >> 3u) + 1);
 
     // 计算哈希函数个数
@@ -37,6 +37,14 @@ void BloomFilter::insert(const ByteBuffer &data) {
     }
 }
 
+void BloomFilter::insert(const std::string &str) {
+    size_t pos;
+    for (auto seed : hashSeeds) {
+        pos = hash(str.data(), str.length(), seed);
+        bitBuffer[pos >> 3u] = bitBuffer[pos >> 3u] | (1u << (pos & 3u));
+    }
+}
+
 bool BloomFilter::contain(const ByteBuffer &data) {
     size_t pos;
     for (auto seed : hashSeeds) {
@@ -47,8 +55,22 @@ bool BloomFilter::contain(const ByteBuffer &data) {
     return true;
 }
 
+bool BloomFilter::contain(const std::string &str) {
+    size_t pos;
+    for (auto seed : hashSeeds) {
+        pos = hash(str.data(), str.length(), seed);
+        if (!(bitBuffer[pos >> 3u] & (1u << (pos & 3u))))
+            return false;
+    }
+    return true;
+}
+
 size_t BloomFilter::hash(const ByteBuffer &data, ULong seed) {
     return MurmurHash::run(data.data(), data.size(), seed) % size;
+}
+
+size_t BloomFilter::hash(const void *data, size_t len, ULong seed) {
+    return MurmurHash::run(data, len, seed) % size;
 }
 
 void BloomFilter::writeToBuffer(ByteBuffer &buffer) {

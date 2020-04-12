@@ -36,31 +36,43 @@ public:
      * 向布隆过滤器插入内容
      * @param data
      */
-    void insert(const ByteBuffer& data);
+    void insert(const ByteBuffer &data);
+
+    /**
+     * 向布隆过滤器插入内容
+     */
+    void insert(const std::string &str);
 
     /**
      * 判断布隆过滤器是否包含
      * @param data
      * @return
      */
-    bool contain(const ByteBuffer& data);
+    bool contain(const ByteBuffer &data);
+
+    /**
+     * 判断布隆过滤器是否包含
+     */
+    bool contain(const std::string &str);
 
     /**
      * 把数据写入 buffer
      * @param buffer
      */
-    void writeToBuffer(ByteBuffer& buffer);
+    void writeToBuffer(ByteBuffer &buffer);
 
     /**
      * 从 buffer 读取
      * @param buffer
      * @return
      */
-    static BloomFilter * readFromBuffer(const ByteBuffer& buffer);
+    static BloomFilter *readFromBuffer(const ByteBuffer &buffer);
 
 private:
 
-    size_t hash(const ByteBuffer&data, ULong seed);
+    size_t hash(const ByteBuffer &data, ULong seed);
+
+    size_t hash(const void *data, size_t len, ULong seed);
 };
 
 
