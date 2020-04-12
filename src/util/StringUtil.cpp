@@ -33,3 +33,7 @@ std::vector<std::string> StringUtil::split(const std::string &str, const std::st
     }
     return output;
 }
+
+bool StringUtil::endsWith(const std::string &str, const std::string &needle) {
+    return str.rfind(needle) == (str.length() - needle.length());
+}

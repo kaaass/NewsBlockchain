@@ -24,6 +24,14 @@ public:
      * @return
      */
     static std::vector<std::string> split(const std::string &str, const std::string &delims);
+
+    /**
+     * 判断字符串是否结尾于
+     * @param str
+     * @param needle
+     * @return
+     */
+    static bool endsWith(const std::string &str, const std::string &needle);
 };
 
 

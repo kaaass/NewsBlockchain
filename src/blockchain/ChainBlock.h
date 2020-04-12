@@ -3,11 +3,11 @@
 
 #include <util/Types.h>
 #include <util/ByteBuffer.h>
+#include "BloomFilter.h"
 
 #ifdef UNIT_TEST
 
 #include <gtest/gtest.h>
-#include "BloomFilter.h"
 
 #endif
 

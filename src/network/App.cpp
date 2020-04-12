@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Controller.h"
+#include "StaticController.h"
 #include <network/Endpoint.h>
 #include <network/GlogLogger.h>
 #include <network/Serializer.h>
@@ -29,6 +30,8 @@ void App::prepareSettings() {
 }
 
 void App::registerController() {
+    // 静态控制器
+    StaticController::publish(service);
     // 控制器：/api/block
     BlockController::publish(service);
     // 控制器：/api/hash
