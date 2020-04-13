@@ -57,6 +57,9 @@ void StaticController::staticHandler(const std::shared_ptr<restbed::Session> ses
     } else if (StringUtil::endsWith(filename, ".css")) {
         mime = "text/css";
         filename = "css/" + filename;
+    } else if (StringUtil::endsWith(filename, ".hbs")) {
+        mime = "text/plain";
+        filename = "templates/" + filename;
     } else {
         mime = "text/plain";
     }

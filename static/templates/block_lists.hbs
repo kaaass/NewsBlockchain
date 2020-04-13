@@ -1,0 +1,25 @@
+{{#each blocks}}
+    <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+        <div class="row px-3 py-2">
+            <div class="col-2 px-0">
+                <small class="my-auto"><b>区块ID: {{blockId}}</b></small>
+            </div>
+        </div>
+        <div class="row px-3">
+
+            <div class="col px-4 py-2 d-flex flex-column position-static">
+                <p><b>区块哈希树根：{{hashRoot}}</b></p>
+                <p><small>区块大小：{{size}}</small></p>
+                <p><small>前区块哈希（整区块哈希）: {{prevBlockHash}}</small></p>
+            </div>
+
+            <div class="col px-5 py-2 d-flex flex-column position-static">
+                <small class="text-center">创建时间：{{readableTime}}</small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <a class="btn btn-link" href="detail.html?id={{blockId}}"><small>查看详情</small></a>
+            </div>
+        </div>
+    </div>
+{{/each}}
