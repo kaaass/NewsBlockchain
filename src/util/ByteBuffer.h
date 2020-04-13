@@ -32,6 +32,12 @@ public:
      */
     static ByteBuffer str(const std::string &str);
 
+    /**
+     * 将hex字符串转为字节缓冲区
+     * @param buffer
+     */
+    static ByteBuffer hex(const std::string &str);
+
     ByteBuffer &operator=(const std::vector<Byte> &buffer);
 
     /**

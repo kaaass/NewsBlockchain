@@ -1,5 +1,6 @@
 #include <cassert>
 #include <string>
+#include <sstream>
 #include "ByteBuffer.h"
 
 ByteBuffer::ByteBuffer(void *data, size_t size) {//将数据的data开始 size大小赋值给bytes vector
@@ -50,6 +51,17 @@ std::ostream &operator<<(std::ostream &out, const ByteBuffer &buffer) {
         out << buffer.bytes[i].toHexString().c_str();
     }
     return out;
+}
+
+ByteBuffer ByteBuffer::hex(const std::string &str) {
+    std::stringstream sstream;
+    UInt cur;
+    ByteBuffer result;
+    sstream << std::hex << str;
+    while (sstream >> cur) {
+        result.push_back(cur);
+    }
+    return result;
 }
 
 Byte &ByteBuffer::operator[](Index ind) {

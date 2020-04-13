@@ -11,6 +11,10 @@ void to_json(json &j, const ByteBuffer &buffer) {
     j = sstream.str();
 }
 
+void from_json(const json& j, ByteBuffer& buffer) {
+    buffer = ByteBuffer::hex(j.get<std::string>());
+}
+
 void to_json(json &j, const ChainBlock::Header &header) {
     j = json{
             {"blockId",       (UInt) header.blockId},

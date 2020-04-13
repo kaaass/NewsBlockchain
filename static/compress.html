@@ -50,14 +50,37 @@
 
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">新闻区块链</h1>
-            <p class="lead text-muted">浏览区块链中的所有新闻，或进行搜索。</p>
+            <h1 class="jumbotron-heading">压缩</h1>
+            <p class="lead text-muted">对给定数据进行压缩。</p>
             <p>
-                <a href="blockchain.html" class="btn btn-primary my-2">浏览所有区块</a>
-                <a href="search.html" class="btn btn-secondary my-2">根据关键词搜索</a>
+                <button id="compress" class="btn btn-primary my-2">压缩</button>
+                <button id="decompress" class="btn btn-secondary my-2">解压</button>
             </p>
         </div>
     </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="row">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <p><b>压缩结果</b></p>
+                        <p>输入数据：<span id="input"></span></p>
+                        <p>压缩结果：</p>
+                        <pre><code id="result"></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="row">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <p><b>解压结果</b></p>
+                        <pre><code id="result-decomp"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 
@@ -71,8 +94,32 @@
     </div>
 </footer>
 
+<!-- 压缩模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalTitle">压缩</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="addModalBody">
+                <div class="form-group">
+                    <label for="content">待压缩数据</label>
+                    <textarea class="form-control" id="content"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="block-add" type="button" class="btn btn-primary" data-dismiss="modal">压缩</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
 <script src="js/config.js"></script>
-<script src="js/index.js"></script>
+<script src="js/compress.js"></script>
 </body>
 </html>

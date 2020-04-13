@@ -153,8 +153,8 @@ void HuffmanController::publish(restbed::Service &service) {
         }
         auto data = body["data"].get<string>();
         auto result = Huffman::compress({ByteBuffer::str(data)});
-        response.data["dictionary"] = Serializer::bufferRawStr(result.dictionary);
-        response.data["data"] = Serializer::bufferRawStr(result.data[0]);
+        response.data["dictionary"] = result.dictionary;
+        response.data["data"] = result.data[0];
     }).publish(service);
 
     /*
@@ -173,8 +173,8 @@ void HuffmanController::publish(restbed::Service &service) {
             response.message = "缺少参数data";
             return;
         }
-        auto data = ByteBuffer::str(body["data"].get<string>());
-        auto dictionary = ByteBuffer::str(body["dictionary"].get<string>());
+        auto data = body["data"].get<ByteBuffer>();
+        auto dictionary = body["dictionary"].get<ByteBuffer>();
         auto result = Huffman::decompress(dictionary, data);
         response.data["data"] = Serializer::bufferRawStr(result);
     }).publish(service);
