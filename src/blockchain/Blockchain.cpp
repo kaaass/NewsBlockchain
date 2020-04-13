@@ -74,11 +74,11 @@ bool Blockchain::check() {
     return true;
 }
 
-std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt blockId) {
+std::vector<Blockchain::Difference> Blockchain::validateNews(const std::string &data, UInt blockId) {
     std::vector<ByteBuffer> bodyData; // 数据项
-    std::vector<UInt32> wrongVec; // 数据项对应的hash
     auto paras = StringUtil::splitParagraph(data); // 分段
     const UInt32 fromLen = paras.size();
+    const std::vector<ByteBuffer> &dataBlock = get(blockId).getAllDecomposedDataBlock();
     const std::vector<UInt32> &hashTree = get(blockId).getHashTree(); // blockId对应的hashTree
     const ChainBlock::DataBlockIndex realSize = get(blockId).size() - 1; // 除去字典
     const UInt32 toLen = get(blockId).size() - 1; // 除去字典
@@ -88,7 +88,6 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
     auto compResult = Huffman::compress(paras); // 压缩
     auto &compData = compResult.data;
     bodyData.insert(bodyData.end(), compData.begin(), compData.end());
-
     auto index = [ toLen](UInt32 i, UInt32 j) {
         return i * (toLen + 1) + j;
     };
@@ -101,7 +100,6 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
         operations[index(0, j)] = Add;
     }
     operations[0] = Copy;
-
     for (UInt32 i = 1; i <= fromLen; i = i + 1) {
         for (UInt32 j = 1; j <= toLen; j = j + 1) {
             auto ifAdd = distance[index(i, j - 1)] + 1;
@@ -109,7 +107,6 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
             UInt32 bufferHash = Hash::run(bodyData[i-1]);
             bool needReplace = bufferHash != hashVec[j - 1];
             auto ifReplace = distance[index(i - 1, j - 1)] + (needReplace ? 1 : 0);
-
             if (ifAdd <= ifRemove && ifAdd <= ifReplace) {
                 distance[index(i, j)] = ifAdd;
                 operations[index(i, j)] = Add;
@@ -129,12 +126,8 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
             }
         }
     }
-
     std::vector<UInt32> result;
-
-    auto i = fromLen;
-    auto j = toLen;
-
+    auto i = fromLen, j = toLen;
     while (!(i == 0 && j == 0)) {
         EditOperation op = operations[index(i, j)];
         result.emplace_back(op);
@@ -151,9 +144,38 @@ std::vector<UInt32> Blockchain::validateNews(const std::string &data, UInt block
     }
     reverse(result.begin(), result.end());
 
-    return result;
+    UInt32 fromIndex = 0u, toIndex = 0u;
+    ByteBuffer correctContent, originContent;
+    std::vector<Blockchain::Difference> differenceVec;
+    for (auto operation : result) {
+        std::cout << operation << std::endl;
+        if (operation == Copy) {
+            correctContent = paras[fromIndex];
+            originContent = dataBlock[toIndex];
+            differenceVec.emplace_back(Difference("copy", originContent, correctContent));
+            fromIndex = fromIndex + 1;
+            toIndex = toIndex + 1;
+        }
+        else if (operation == Add) {
+            originContent = dataBlock[toIndex];
+            differenceVec.emplace_back("Remove", originContent);
+            toIndex = toIndex + 1;
+        }
+        else if (operation == Remove) {
+            correctContent = paras[fromIndex];
+            differenceVec.emplace_back("Add", correctContent);
+            fromIndex = fromIndex + 1;
+        }
+        else {
+            correctContent = paras[fromIndex];
+            originContent = dataBlock[toIndex];
+            differenceVec.emplace_back("Replace", originContent, correctContent);
+            fromIndex = fromIndex + 1;
+            toIndex = toIndex + 1;
+        }
+    }
+    return differenceVec;
 }
-
 
 #ifdef UNIT_TEST
 
