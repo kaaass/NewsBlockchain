@@ -8,5 +8,7 @@ define([], function () {
         TEMPLATE_SUFFIX: '.hbs',
 
         TITLE_SUFFIX: " - NewsBlockchain",
+
+        PARAM_ID: "id"
     };
 });

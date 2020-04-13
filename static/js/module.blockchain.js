@@ -68,10 +68,34 @@ define(['module.functions', 'axios'], function (functions, request) {
         return data.data.blockIds;
     };
 
+    /**
+     * 从 ID 获得区块详细信息
+     * @param id
+     * @returns {Promise<void>}
+     */
+    let getDetailById = async (id) => {
+        let response = await request.get(`/api/block/${id}/decompress/`)
+            .catch((e) => {
+                console.error("获取区块链详细信息失败：", id, e);
+                functions.modal("错误", "无法获取区块链详细信息，请检查网络连接！");
+            });
+        // 处理数据
+        let data = response.data.data;
+        data.header.readableTime = functions.dateFormatTs(data.header.timestamp, 'Y-m-d H:i:s');
+        for (const block of data.body) {
+            let cur = block.id;
+            if (cur > 0) {
+                block.decompressed = data.decompressed[cur - 1];
+            }
+        }
+        return data;
+    };
+
     return {
         getAllBlocks: getAllBlocks,
         processData: processData,
         addBlock: addBlock,
-        importBlock: importBlock
+        importBlock: importBlock,
+        getDetailById: getDetailById
     };
 });
