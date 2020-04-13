@@ -31,17 +31,17 @@ class Blockchain {
     struct Difference {
         std::string operation;
         ByteBuffer originContent;
-        ByteBuffer correctContent;
+        ByteBuffer nowContent;
 
         Difference(const std::string &operation, const ByteBuffer &originContent, const ByteBuffer &correctContent) {
             this->operation = operation;
             this->originContent = originContent;
-            this->correctContent = correctContent;
+            this->nowContent = correctContent;
         }
 
         Difference(const std::string &operation, const ByteBuffer &originContent) {
             this->operation = operation;
-            this->originContent = this->correctContent = originContent;
+            this->originContent = this->nowContent = originContent;
         }
 
         ~Difference() = default;
@@ -111,6 +111,7 @@ public:
     static void clear();
 
     FRIEND_TEST(TestBlockchain, testCreate);
+
     FRIEND_TEST(TestBlockchain, testCheck);
 
 #endif

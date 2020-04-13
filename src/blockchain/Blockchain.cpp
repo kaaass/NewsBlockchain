@@ -58,13 +58,13 @@ bool Blockchain::check() {
         if (prevBlockHash != prevRealHash) {
             return false;
         }
-        if(blockID == GLOBAL_CHAIN.size()-1) { // 检测最后一个区块
-            const std::vector<ByteBuffer> & allDataBlock = iter->get().getAllDataBlock();//所有数据块
+        if (blockID == GLOBAL_CHAIN.size() - 1) { // 检测最后一个区块
+            const std::vector<ByteBuffer> &allDataBlock = iter->get().getAllDataBlock();//所有数据块
             UInt32 sectionNumber = 0u; // 段落序号
             for (auto &ref: allDataBlock) {
                 UInt32 checkHash = Hash::run(ref);
                 UInt32 realHash = iter->get().getDataBlockHashById(sectionNumber);
-                if(realHash != checkHash) {
+                if (realHash != checkHash) {
                     return false;
                 }
                 sectionNumber = sectionNumber + 1;
@@ -88,7 +88,7 @@ std::vector<Blockchain::Difference> Blockchain::validateNews(const std::string &
     auto compResult = Huffman::compress(paras); // 压缩
     auto &compData = compResult.data;
     bodyData.insert(bodyData.end(), compData.begin(), compData.end());
-    auto index = [ toLen](UInt32 i, UInt32 j) {
+    auto index = [toLen](UInt32 i, UInt32 j) {
         return i * (toLen + 1) + j;
     };
     for (UInt32 i = 0; i <= fromLen; i = i + 1) {
@@ -104,23 +104,20 @@ std::vector<Blockchain::Difference> Blockchain::validateNews(const std::string &
         for (UInt32 j = 1; j <= toLen; j = j + 1) {
             auto ifAdd = distance[index(i, j - 1)] + 1;
             auto ifRemove = distance[index(i - 1, j)] + 1;
-            UInt32 bufferHash = Hash::run(bodyData[i-1]);
+            UInt32 bufferHash = Hash::run(bodyData[i - 1]);
             bool needReplace = bufferHash != hashVec[j - 1];
             auto ifReplace = distance[index(i - 1, j - 1)] + (needReplace ? 1 : 0);
             if (ifAdd <= ifRemove && ifAdd <= ifReplace) {
                 distance[index(i, j)] = ifAdd;
                 operations[index(i, j)] = Add;
-            }
-            else if (ifRemove <= ifAdd && ifRemove <= ifReplace) {
+            } else if (ifRemove <= ifAdd && ifRemove <= ifReplace) {
                 distance[index(i, j)] = ifRemove;
                 operations[index(i, j)] = Remove;
-            }
-            else {
+            } else {
                 distance[index(i, j)] = ifReplace;
                 if (needReplace) {
                     operations[index(i, j)] = Replace;
-                }
-                else {
+                } else {
                     operations[index(i, j)] = Copy;
                 }
             }
@@ -133,11 +130,9 @@ std::vector<Blockchain::Difference> Blockchain::validateNews(const std::string &
         result.emplace_back(op);
         if (op == Add) {
             j = j - 1;
-        }
-        else if (op == Remove) {
+        } else if (op == Remove) {
             i = i - 1;
-        }
-        else {
+        } else {
             i = i - 1;
             j = j - 1;
         }
@@ -152,21 +147,18 @@ std::vector<Blockchain::Difference> Blockchain::validateNews(const std::string &
         if (operation == Copy) {
             correctContent = paras[fromIndex];
             originContent = dataBlock[toIndex];
-            differenceVec.emplace_back(Difference("copy", originContent, correctContent));
+            differenceVec.emplace_back(Difference("Copy", originContent, correctContent));
             fromIndex = fromIndex + 1;
             toIndex = toIndex + 1;
-        }
-        else if (operation == Add) {
+        } else if (operation == Add) {
             originContent = dataBlock[toIndex];
             differenceVec.emplace_back("Remove", originContent);
             toIndex = toIndex + 1;
-        }
-        else if (operation == Remove) {
+        } else if (operation == Remove) {
             correctContent = paras[fromIndex];
             differenceVec.emplace_back("Add", correctContent);
             fromIndex = fromIndex + 1;
-        }
-        else {
+        } else {
             correctContent = paras[fromIndex];
             originContent = dataBlock[toIndex];
             differenceVec.emplace_back("Replace", originContent, correctContent);
