@@ -21,6 +21,32 @@
  */
 class Blockchain {
 
+    enum EditOperation {
+        Copy,
+        Add,
+        Remove,
+        Replace
+    };
+
+    struct Difference {
+        std::string operation;
+        ByteBuffer originContent;
+        ByteBuffer nowContent;
+
+        Difference(const std::string &operation, const ByteBuffer &originContent, const ByteBuffer &correctContent) {
+            this->operation = operation;
+            this->originContent = originContent;
+            this->nowContent = correctContent;
+        }
+
+        Difference(const std::string &operation, const ByteBuffer &originContent) {
+            this->operation = operation;
+            this->originContent = this->nowContent = originContent;
+        }
+
+        ~Difference() = default;
+    };
+
     /**
      * 保存所有区块链的引用
      */
@@ -66,8 +92,13 @@ public:
      * @param data
      * @param blockId
      * @return 获取篡改新闻所在自然段
+     * 返回形如：
+     * copy abc abc
+     * replace a b
+     * add c c //原文变为篡改后的文章需要在第二段和第三段之间添加一个c
+     * remove b b //原文变为篡改后的文章需要删除第四段的c
      */
-    static std::vector<UInt> validateNews(const std::string &data, UInt blockId);
+    static std::vector<Difference> validateNews(const std::string &data, UInt blockId);
 
 #ifdef UNIT_TEST
 
@@ -80,6 +111,7 @@ public:
     static void clear();
 
     FRIEND_TEST(TestBlockchain, testCreate);
+
     FRIEND_TEST(TestBlockchain, testCheck);
 
 #endif
