@@ -104,10 +104,11 @@ void Endpoint::handlePostImpl(const std::shared_ptr<restbed::Session> origin) {
             result["message"] = e.what();
             LOG(WARNING) << "Unexpected exception: " << e.what();
         }
+        result["code"] = response.code;
         auto jsonStr = result.dump();
         // 返回拼接
         ::Response sessionResp;
-        sessionResp.set_status_code(response.code);
+        sessionResp.set_status_code(OK);
         sessionResp.set_body(jsonStr);
         sessionResp.add_header("Content-Length", ::to_string(jsonStr.size()));
         sessionResp.add_header("Content-Type", "application/json");

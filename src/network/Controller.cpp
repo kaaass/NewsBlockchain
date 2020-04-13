@@ -7,6 +7,7 @@
 #include <hash/Hash.h>
 #include <huffman/Huffman.h>
 #include <search/Search.h>
+#include <fstream>
 
 using namespace std;
 using namespace restbed;
@@ -17,7 +18,7 @@ void BlockController::publish(restbed::Service &service) {
      * 获得单个区块
      * GET /api/block/:id/
      */
-    Endpoint::httpGet("/api/block/{id: .*}/", HANDLE_LOGIC(session, response) {
+    Endpoint::httpGet("/api/block/{id: [0-9]*}/", HANDLE_LOGIC(session, response) {
         string strId = session.request->get_path_parameter("id");
         UInt id = ::stoi(strId);
         if (id < 0 || id >= Blockchain::size()) {
@@ -32,7 +33,7 @@ void BlockController::publish(restbed::Service &service) {
      * 获得解压区块
      * GET /api/block/:id/decompress/
      */
-    Endpoint::httpGet("/api/block/{id: .*}/decompress/", HANDLE_LOGIC(session, response) {
+    Endpoint::httpGet("/api/block/{id: [0-9]*}/decompress/", HANDLE_LOGIC(session, response) {
         string strId = session.request->get_path_parameter("id");
         UInt id = ::stoi(strId);
         if (id < 0 || id >= Blockchain::size()) {
@@ -47,7 +48,7 @@ void BlockController::publish(restbed::Service &service) {
      * 获得区块二进制
      * GET /api/block/:id/binary/
      */
-    Endpoint::httpGet("/api/block/{id: .*}/binary/", HANDLE_LOGIC(session, response) {
+    Endpoint::httpGet("/api/block/{id: [0-9]*}/binary/", HANDLE_LOGIC(session, response) {
         string strId = session.request->get_path_parameter("id");
         UInt id = ::stoi(strId);
         if (id < 0 || id >= Blockchain::size()) {
@@ -88,6 +89,36 @@ void BlockController::publish(restbed::Service &service) {
         response.data["blockId"] = newId;
     });
     apiBlock.publish(service);
+
+    /*
+     * 从文件增加区块
+     * POST /api/block/file/
+     */
+    Endpoint::httpPost("/api/block/file/", HANDLE_LOGIC(session, response) {
+        auto &body = session.body;
+        if (!body.contains("filepath")) {
+            response.code = 400;
+            response.message = "缺少参数filepath";
+            return;
+        }
+        // 读入文件
+        auto filepath = body["filepath"].get<string>();
+        std::ifstream stream(filepath);
+        if (stream.is_open()) {
+            json jsonData;
+            stream >> jsonData;
+            vector<UInt> ids;
+            for (auto &passage : jsonData) {
+                auto data = passage.get<string>();
+                auto newId = Blockchain::create(data);
+                ids.push_back(newId);
+            }
+            response.data["blockIds"] = ids;
+        } else {
+            response.code = 400;
+            response.message = "文件不存在！";
+        }
+    }).publish(service);
 }
 
 void HashController::publish(restbed::Service &service) {

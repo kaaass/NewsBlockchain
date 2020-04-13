@@ -24,13 +24,14 @@ require([
                     functions.modal("提示", "搜索内容不能为空！");
                     return false;
                 }
-                $('h1').text('搜索结果 - ' + keyword);
+                $('h1').text('搜索中...');
                 request.get("/api/search/", {
                     params: {
                         keyword: keyword
                     }
                 })
                     .then((response) => {
+                        $('h1').text('搜索结果 - ' + keyword);
                         let data = response.data;
                         let blocks = blockchain.processData(data.data);
                         functions.renderHbs($list, TEMPLATE_LIST, {
