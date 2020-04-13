@@ -49,15 +49,28 @@
 <main role="main">
 
     <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">新闻区块链</h1>
-            <p class="lead text-muted">浏览区块链中的所有新闻，或进行搜索。</p>
-            <p>
-                <a href="blockchain.html" class="btn btn-primary my-2">浏览所有区块</a>
-                <a href="search.html" class="btn btn-secondary my-2">根据关键词搜索</a>
-            </p>
+        <div class="container-fluid">
+            <h1 class="jumbotron-heading">哈希函数</h1>
+            <br>
+            <p>输入待计算的内容，计算其哈希值。</p>
+            <br>
+            <input class="form-control" type="text" placeholder="Hash(...)">
         </div>
     </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="row">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <p><b>计算结果</b></p>
+                        <p>输入数据：<span id="input"></span></p>
+                        <p>哈希值：<span id="hash"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 
@@ -73,6 +86,6 @@
 
 <script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
 <script src="js/config.js"></script>
-<script src="js/index.js"></script>
+<script src="js/hash.js"></script>
 </body>
 </html>
