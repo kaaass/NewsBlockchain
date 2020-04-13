@@ -21,6 +21,14 @@
  */
 class Blockchain {
 
+    enum EditOperation {
+        Copy,
+        Add,
+        Remove,
+        Replace
+    };
+
+
     /**
      * 保存所有区块链的引用
      */
