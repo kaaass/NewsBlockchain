@@ -1,0 +1,25 @@
+{{#each diffs}}
+<div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+    <div class="row px-3 py-2">
+        <div class="col-2 px-0">
+            <small class="my-auto"><b>篡改状况：{{operation}}</b></small>
+        </div>
+    </div>
+    {{#if originContent}}
+        <div class="row px-3">
+            <div class="col">
+                <p>原新闻内容：</p>
+                <pre><code>{{originContent}}</code></pre>
+            </div>
+        </div>
+    {{/if}}
+    {{#if nowContent}}
+        <div class="row px-3">
+            <div class="col">
+                <p>当前内容：</p>
+                <pre><code>{{nowContent}}</code></pre>
+            </div>
+        </div>
+    {{/if}}
+</div>
+{{/each}}

@@ -50,14 +50,19 @@
 
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">新闻区块链</h1>
-            <p class="lead text-muted">浏览区块链中的所有新闻，或进行搜索。</p>
+            <h1 class="jumbotron-heading">篡改检测</h1>
+            <p class="lead text-muted">对区块链本身与区块链内的新闻进行篡改检测。</p>
             <p>
-                <a href="blockchain.html" class="btn btn-primary my-2">浏览所有区块</a>
-                <a href="search.html" class="btn btn-secondary my-2">根据关键词搜索</a>
+                <button id="blockchain" class="btn btn-primary my-2">校验区块链</button>
+                <button id="news" class="btn btn-secondary my-2">校验新闻</button>
             </p>
         </div>
     </section>
+
+    <div class="album py-5 bg-light">
+        <div id="diff-list" class="container">
+        </div>
+    </div>
 
 </main>
 
@@ -71,8 +76,36 @@
     </div>
 </footer>
 
+<!-- 校验区块模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalTitle">校验区块</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="addModalBody">
+                <div class="form-group">
+                    <label for="blockId">区块 ID</label>
+                    <input type="text" class="form-control" id="blockId"/>
+                </div>
+                <div class="form-group">
+                    <label for="content">待校验内容</label>
+                    <textarea class="form-control" id="content"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="block-add" type="button" class="btn btn-primary" data-dismiss="modal">校验</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
 <script src="js/config.js"></script>
-<script src="js/index.js"></script>
+<script src="js/validate.js"></script>
 </body>
 </html>

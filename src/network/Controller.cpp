@@ -211,8 +211,15 @@ void ValidateController::publish(restbed::Service &service) {
         }
         auto data = body["data"].get<string>();
         // 调用逻辑
-        auto result = Blockchain::validateNews(data, id);
-        response.data["wrong"] = result;
+        auto diffs = Blockchain::validateNews(data, id);
+        response.data = json::array();
+        for (auto &diff : diffs) {
+            json obj;
+            obj["operation"] = diff.operation;
+            obj["originContent"] = Serializer::bufferRawStr(diff.originContent);
+            obj["nowContent"] = Serializer::bufferRawStr(diff.nowContent);
+            response.data.push_back(obj);
+        }
     }).publish(service);
 }
 
