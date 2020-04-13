@@ -30,7 +30,7 @@ void StaticController::indexHandler(const std::shared_ptr<restbed::Session> sess
             {"Location", "/app/index.html"}
     };
 
-    session->close(MOVED_PERMANENTLY, "", headers);
+    session->close(FOUND, "", headers);
 }
 
 /**

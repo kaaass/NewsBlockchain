@@ -23,6 +23,28 @@
 
 <div class="container pt-4">
     <div class="row ml-2">
+        <h5>哈希树</h5>
+    </div>
+</div>
+
+<div class="container py-2">
+    <div class="container pt-3 bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+        <div class="row px-3">
+            <div class="col">
+                <p>节点数：{{hashSize}}</p>
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col">
+                <p>哈希树节点内容：</p>
+                <pre><code>{{hashData}}</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-4">
+    <div class="row ml-2">
         <h5>区块体</h5>
     </div>
 </div>
@@ -30,36 +52,36 @@
 <div class="container py-2">
 
     {{#each body}}
-    <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
-        <div class="row px-3 py-2">
-            <div class="col-2 px-0">
-                <small class="my-auto"><b>数据块ID: {{id}}</b></small>
+        <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+            <div class="row px-3 py-2">
+                <div class="col-2 px-0">
+                    <small class="my-auto"><b>数据块ID: {{id}}</b></small>
+                </div>
             </div>
-        </div>
-        <div class="row px-3">
-            <div class="col">
-                <p>数据块大小：{{size}}</p>
+            <div class="row px-3">
+                <div class="col">
+                    <p>数据块大小：{{size}}</p>
+                </div>
             </div>
-        </div>
-        <div class="row px-3">
-            <div class="col">
-                <p>数据块内容：</p>
-                <pre><code>{{data}}</code></pre>
+            <div class="row px-3">
+                <div class="col">
+                    <p>数据块内容：</p>
+                    <pre><code>{{data}}</code></pre>
+                </div>
             </div>
+            {{#if decompressed}}
+                <div class="row px-3">
+                    <div class="col">
+                        <p>解压后大小：{{decompressed.size}}</p>
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col">
+                        <p>解压缩内容：</p>
+                        <pre><code>{{decompressed.data}}</code></pre>
+                    </div>
+                </div>
+            {{/if}}
         </div>
-        {{#if decompressed}}
-        <div class="row px-3">
-            <div class="col">
-                <p>解压后大小：{{decompressed.size}}</p>
-            </div>
-        </div>
-        <div class="row px-3">
-            <div class="col">
-                <p>解压缩内容：</p>
-                <pre><code>{{decompressed.data}}</code></pre>
-            </div>
-        </div>
-        {{/if}}
-    </div>
     {{/each}}
 </div>

@@ -82,6 +82,8 @@ define(['module.functions', 'axios'], function (functions, request) {
         // 处理数据
         let data = response.data.data;
         data.header.readableTime = functions.dateFormatTs(data.header.timestamp, 'Y-m-d H:i:s');
+        data.hashSize = data.hashTree.length;
+        data.hashData = JSON.stringify(data.hashTree);
         for (const block of data.body) {
             let cur = block.id;
             if (cur > 0) {
