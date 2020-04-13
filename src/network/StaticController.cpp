@@ -14,7 +14,8 @@ void StaticController::publish(restbed::Service &service) {
     auto staticResc = make_shared<Resource>();
     staticResc->set_paths({"/app/{filename: .*\\.html}",
                            "/app/js/{filename: .*\\.js}",
-                           "/app/css/{filename: .*\\.css}"});
+                           "/app/css/{filename: .*\\.css}",
+                           "/app/templates/{filename: .*\\.hbs}"});
     staticResc->set_method_handler("GET", StaticController::staticHandler);
 
     service.publish(indexResc);
