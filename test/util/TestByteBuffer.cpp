@@ -87,6 +87,9 @@ TEST(TestByteBuffer, testOutput) {
     ByteBuffer buffer({0x12, 0x19, 0x50, 0x3f, 0x4f, 0x0, 0xff});
     sstream << buffer;
     ASSERT_EQ("12 19 50 3f 4f 00 ff", sstream.str());
+
+    buffer = ByteBuffer::hex("12 19 50");
+    ASSERT_EQ(ByteBuffer({0x12, 0x19, 0x50}), buffer);
 }
 
 TEST(TestByteBuffer, testWrite) {

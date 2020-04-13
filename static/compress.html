@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>压缩 - NewsBlockchain</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://v4.bootcss.com/docs/4.3/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://v4.bootcss.com/docs/4.3/examples/album/album.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/">NewsBlockchain</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">主页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="blockchain.html">区块链</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="compress.html">压缩 <span class="sr-only">(当前)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hash.html">哈希函数</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="validate.html">篡改检测</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="search.html">搜索</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main role="main">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">压缩</h1>
+            <p class="lead text-muted">对给定数据进行压缩。</p>
+            <p>
+                <button id="compress" class="btn btn-primary my-2">压缩</button>
+                <button id="decompress" class="btn btn-secondary my-2">解压</button>
+            </p>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="row">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <p><b>压缩结果</b></p>
+                        <p>输入数据：<span id="input"></span></p>
+                        <p>压缩结果：</p>
+                        <pre><code id="result"></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="row">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <p><b>解压结果</b></p>
+                        <pre><code id="result-decomp"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">返回顶部</a>
+        </p>
+        <p>NewsBlockchain</p>
+        <p>Powered By Restbed + Bootstrap v4</p>
+    </div>
+</footer>
+
+<!-- 压缩模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalTitle">压缩</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="addModalBody">
+                <div class="form-group">
+                    <label for="content">待压缩数据</label>
+                    <textarea class="form-control" id="content"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="block-add" type="button" class="btn btn-primary" data-dismiss="modal">压缩</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/compress.js"></script>
+</body>
+</html>

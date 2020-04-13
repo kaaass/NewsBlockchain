@@ -27,6 +27,8 @@ ChainBlock::ChainBlock(const std::string &data, UInt32 prevHash, UInt blockId) {
     blockHeader.hashRoot = blockBody.hashTree[0];
     blockHeader.prevBlockHash = prevHash;
     blockHeader.timestamp = time(nullptr);
+    // 构建布隆过滤器
+    buildBloomFilter(paras, data.size());
 }
 
 void ChainBlock::buildHashTree() {
@@ -76,6 +78,18 @@ void ChainBlock::buildHashTree() {
 
         rest = nextRest;
         hashTree.insert(hashTree.begin(), temp.begin(), temp.end());
+    }
+}
+
+void ChainBlock::buildBloomFilter(const std::vector<ByteBuffer> &data, size_t length) {
+    size_t wordCount = std::ceil(double(length) / 4.7);
+    keywordFilter = new BloomFilter(wordCount);
+    for (auto &para : data) {
+        auto strPara = std::string(para.data(), para.data() + para.size());
+        auto words = StringUtil::split(strPara, " ");
+        for (auto &word : words) {
+            keywordFilter->insert(word);
+        }
     }
 }
 
@@ -201,6 +215,13 @@ UInt32 ChainBlock::getPrevBlockHash() const {
 }
 
 bool ChainBlock::hasKeyword(const std::vector<std::string> &keywords) {
-    // TODO 完成布隆过滤
+    for (auto keyword : keywords) {
+        if (!keywordFilter->contain(keyword))
+            return false;
+    }
     return true;
+}
+
+ChainBlock::~ChainBlock() {
+    // delete keywordFilter;
 }

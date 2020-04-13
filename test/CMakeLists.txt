@@ -17,6 +17,16 @@ if (BUILD_TEST)
     target_link_libraries(unit_test gtest ${CMAKE_THREAD_LIBS_INIT})
     add_test(NAME "RunUnitTest"
             COMMAND "./unit_test")
+    # Link
+    add_dependencies(unit_test restbed)
+    target_link_libraries(unit_test
+            ${restbed_LIBRARY} Threads::Threads
+            json
+            ${glog_LIBRARY} ${Unwind_LIBRARY})
+    target_include_directories(unit_test PUBLIC
+            ${restbed_INCLUDE}
+            ${glog_INCLUDE})
+    # Coverage test
     add_coverage(unit_test)
 
     if (MSVC)

@@ -3,6 +3,7 @@
 
 #include <util/Types.h>
 #include <util/ByteBuffer.h>
+#include "BloomFilter.h"
 
 #ifdef UNIT_TEST
 
@@ -129,6 +130,11 @@ private:
      */
     Body blockBody;
 
+    /**
+     * 关键字筛选用布隆过滤器
+     */
+    BloomFilter *keywordFilter = nullptr;
+
 public:
 
     /**
@@ -224,9 +230,11 @@ public:
     UInt32 getPrevBlockHash() const;
 
     /**
-     *haskeyword 看起来很nb的样子
+     * 在 O(m) 时间内判断是否包含 m 个关键词
      */
     bool hasKeyword(const std::vector<std::string> &keywords);
+
+    virtual ~ChainBlock();
 
 #ifdef UNIT_TEST
 
@@ -254,6 +262,11 @@ private:
     void buildHashTree();
 
     /**
+     * 从区块体构建布隆过滤器
+     */
+    void buildBloomFilter(const std::vector<ByteBuffer> &data, size_t length);
+
+    /**
      * 计算blockHashOffset
      */
     static HashTreeIndex calcBlockHashOffset(DataBlockIndex size);
@@ -262,6 +275,8 @@ private:
      * 判断哈希树下标位置的结点是否是填充空白
      */
     static bool isHashTreePadding(DataBlockIndex size, HashTreeIndex ind);
+
+    friend class Serializer;
 };
 
 #define HTREE_LF(x) (2*(x)+1)

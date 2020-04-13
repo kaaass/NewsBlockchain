@@ -32,6 +32,12 @@ public:
      */
     static ByteBuffer str(const std::string &str);
 
+    /**
+     * 将hex字符串转为字节缓冲区
+     * @param buffer
+     */
+    static ByteBuffer hex(const std::string &str);
+
     ByteBuffer &operator=(const std::vector<Byte> &buffer);
 
     /**
@@ -145,6 +151,12 @@ public:
      * @return
      */
     ByteBuffer &write(ULong uLong);
+
+    /**
+     * 预分配缓冲区空间
+     * @param size
+     */
+    void allocate(size_t size);
 
     /**
      * 清空缓冲区

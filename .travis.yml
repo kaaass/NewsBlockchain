@@ -1,16 +1,17 @@
-dist: trusty
+dist: xenial
 language: cpp
 
 compiler:
   - gcc
   - clang
 
-#addons:
-#  apt:
-#    sources:
-#      - ubuntu-toolchain-r-test
-#      - llvm-toolchain-trusty-5.0
-#    packages:
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    #      - llvm-toolchain-trusty-5.0
+    packages:
+      - libunwind-dev
 #      - g++-6
 #      - clang-5.0
 

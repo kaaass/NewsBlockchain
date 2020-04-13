@@ -146,16 +146,16 @@ std::vector<Blockchain::Difference> Blockchain::validateNews(const std::string &
         if (operation == Copy) {
             correctContent = paras[fromIndex];
             originContent = dataBlock[toIndex];
-            differenceVec.emplace_back(Difference("Copy", originContent, correctContent));
+            differenceVec.emplace_back("Copy", originContent, correctContent);
             fromIndex = fromIndex + 1;
             toIndex = toIndex + 1;
         } else if (operation == Add) {
             originContent = dataBlock[toIndex];
-            differenceVec.emplace_back("Remove", originContent);
+            differenceVec.emplace_back("Remove", originContent, ByteBuffer());
             toIndex = toIndex + 1;
         } else if (operation == Remove) {
             correctContent = paras[fromIndex];
-            differenceVec.emplace_back("Add", correctContent);
+            differenceVec.emplace_back("Add", ByteBuffer(), correctContent);
             fromIndex = fromIndex + 1;
         } else {
             correctContent = paras[fromIndex];
